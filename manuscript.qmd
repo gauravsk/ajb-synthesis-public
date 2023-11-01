@@ -198,7 +198,7 @@ Another potential source of regulation is through incorporating density-dependen
 \noindent Continuing the interplay between theory and data is critical not only to improve our fundamental understanding of how soil microbes shape plant coexistence, but also promises to generate actionable insights into the role of soil microbes in pressing environmental challenges like invasive species management habitat restoration. 
 
 ## Data/code availability
-\noindent No data were used in this manuscript. Code for rendering all figures and manuscript documents is available at XXX for the review process and will be publicly archived upon acceptance. 
+\noindent No data were used in this manuscript. Code for rendering all figures and manuscript documents is available at https://gitlab.com/gklab/ajb-synthesis-public for the review process and will be publicly archived upon acceptance. 
 
 ## Acknowledgements
 
