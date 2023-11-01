@@ -1,0 +1,251 @@
+---
+format:
+  pdf:
+    include-in-header: 
+      text: |
+        \usepackage{lineno,cancel,setspace, indentfirst, environ,amsmath,sectsty}  
+        \usepackage[skip=12pt plus1pt, indent=40pt]{parskip}
+        \usepackage[font=footnotesize,labelfont={bf,footnotesize}]{caption}
+        \subsubsectionfont{\small \itshape}\usepackage{epigraph}
+bibliography: bibliography.bib
+csl: ajb.csl
+pdf-engine: xelatex
+indent: true
+geometry:
+  - bottom=2.5cm
+  - top=2.5cm
+mainfont: TeX Gyre Pagella
+crossref:
+  fig-title: "Fig"     # (default is "Figure")
+---
+
+\def\theequation{Eqn. \arabic{equation}}
+\renewcommand\linenumberfont{\normalfont\bfseries\tiny\color{darkgray}}
+
+
+\setstretch{1.25}
+
+# Quantifying soil microbial effects on plant species coexistence: a conceptual synthesis
+
+\noindent \textbf{Gaurav S. Kandlikar} (contact: [gkandlikar@lsu.edu](mailto:gkandlikar@lsu.edu))  
+\noindent Department of Biological Sciences, Louisiana State University  
+\noindent \textbf{Running head:} Microbial effects on plant coexistence
+
+\vspace{-1em}
+
+## Abstract
+
+\noindent Soil microorganisms play a critical role in shaping  biodiversity dynamics in plant communities. These microbial effects can arise through direct mediation of plant fitness by pathogens and mutualists, and over the past two decades, numerous studies have shined a spotlight on the role of dynamic feedbacks between plants and soil microorganisms as key determinants of plant species coexistence. Such feedbacks arise when plants species modify the composition of the soil community, which in turn affects plant performance. Stimulated by a theoretical model developed in the 1990s, a bulk of the empirical evidence for microbial controls over plant coexistence comes from experiments that quantify plant growth in soil communities that were previously conditioned by conspecific or heterospecific plants. These studies have revealed that soil microbes can generate plant community dynamics ranging from strong negative frequency-dependence to strong positive frequency-dependence.
+
+Even as soil microbes have become recognized as a key player in determining plant coexistence outcomes, the past five years have seen a renewed interest in expanding the conceptual foundations of this field. New results include extensions of plant-soil feedback theory to multi-species communities, re-interpretations of key metrics from classic two-species models, and frameworks to integrate plant-soil feedbacks with processes like intra- and inter-specific competition. Here, I review the implications of theoretical developments for interpreting existing empirical results, and highlight proposed designs for future experiments that can reinforce key model assumptions and enable a more complete understanding of microbial regulation of plant community dynamics.
+
+\vspace{-0.5em}
+
+### Keywords
+
+\noindent plant-soil feedback, coexistence, theory-data integration, multispecies coexistence, soil microbiome, mutualists, pathogens
+
+\clearpage
+
+\linenumbers
+
+\setlength\epigraphwidth{.8\textwidth}
+
+\epigraph{The environment is not a structure imposed on living beings from the outside but is in fact a creation of those beings. Just as there is no organism without an environment, there is no environment without an organism.}{Richard Lewontin\\\textit{The Organism as the Subject and Object of Evolution}}
+
+## Introduction
+
+\noindent Like all organisms, plants simultaneously respond to and shape their environment. One aspect of the environment that is especially dynamic is the microbial community in the soil. Plants can actively alter the structure of the soil community, for example by secreting root exudates that promote the growth of some microbes over others. Plants can also affect the soil community more passively, for example by creating leaf litter that favors certain decomposing microbes over others.  The soil community is itself a heterogeneous entity, comprising a diversity of microbes that can interact with plants directly as mutualists or pathogens, or indirectly by regulating nutrient dynamics and other soil properties in their role as decomposers. Through these complex networks of interactions, soil microbes likely play an important role in structuring biodiversity and community dynamics in all terrestrial ecosystems [@van_der_Heijden_2008]. 
+
+One plant community outcome for which there is growing interest and evidence of microbial regulation is that of plant species coexistence. A hallmark of this research has been a tight integration of theory and experiment [e.g. @Bever_1997; @Kulmatiski_2011; @Stein_2020]. Theory suggested a streamlined experimental design for quantifying microbial effects on plant coexistence  [@Bever_1997], and through meta-analysis of numerous such experiments, we now know that microbes can affect plant coexistence outcomes in a wide range of ecosystems [@Crawford_2019]. Coexistence-promoting negative feedbacks most strongly arise among plant pairs that are distantly related, associate with similar mycorrhiza, and  interact in soils to which they are native [@Crawford_2019], but this negative feedback is seldom strong enough to overcome the fitness imbalances between plants that microbes simultaneously generate [@Yan_2022]. As a result, soil communities by themselves are unlikely to explain observed coexistence in plant communities, and building on simple pairwise pot experiments to understand how these effects play out in nature remains a challenge. To help foster continued interplay between theoretical and empirical research as we address this challenge, I use this Synthesis as an opportunity to review recent theoretical advances and their implications for empirical work.
+
+
+## Pairwise plant coexistence under soil microbial feedbacks
+
+\noindent Experimental research on soil microbial regulation of plant species coexistence was catalyzed by the theoretical framework of @Bever_1997, which evaluates microbial effects on the dynamics of two plant species. In this model, each plant population grows exponentially at a rate determined by the composition of the soil microbial community. The composition of the soil community, in turn, is determined by the composition of the plant community, along with the strength of each species' conditioning effect. This bidirectional interaction gives rise to feedbacks in the plant-soil system, in which the growth rate (fitness) of a plant species depends on its own frequency in the system. A formal model description is available in the original publication [@Bever_1997] and in Appendix S1. Briefly, the model follows the the dynamics of two plant species $1$ and $2$, and the distinct soil microbial communities $A$ and $B$ that each species cultivates (Fig. [-@fig-fig1]A). The rate at which plant $1$ conditions the soil towards community $A$ is set to $1$, and the relative rate at which plant 2 conditions the soil towards $B$ is denoted $v$.[^1] The effects of microbial community $A$ on the growth rate of plants $1$ and $2$ are denoted $m_{1A}$ and $m_{2A}$, respectively, and $m_{1B}$ and $m_{2B}$ capture the effect of microbial community $B$ on plants $1$ and $2$. Positive values of $m_{iX}$ indicate that plant species $i$ perform better in soils with microbial community $X$ than in soils without this microbial community; negative values indicate that plant $i$ is suppressed by microbial community $X$ (Fig. [-@fig-fig1]A-B). 
+
+[^1]: Thus, $v<1$ indicates that plant $2$ conditions the soil towards $B$ more slowly than does plant $1$ towards community $A$, and vice-versa when $v>1$
+
+@Bever_1997 presented two key insights about this model that set the stage for the design and analysis of subsequent empirical studies of microbially mediated plant coexistence. First, the authors showed that whether microbes drive positive or negative feedback in plant population dynamics is captured by the sign of a metric termed $I_S$:
+
+\vspace{-2em}
+
+$$I_S = (m_{1A} + m_{2B}) - (m_{1B} + m_{2A})$$ {#eq-IS}
+
+\noindent Positive feedback arises when microbial communities generally benefit their conditioning plant species more than they benefit the other species, or when microbes generally hurt the conditioning plant less than they hurt the other plant. Mathematically, this requires that $m_{1A} + m_{2B} > m_{1B} + m_{2A}$. On the other hand, negative feedback arises when conditioned soil communities generally benefit the conditioning species less than the other plant (or hurt the conditioning species more than the other plant). Positive feedback hinders plant diversity, because microbes provide a relative advantage to whichever species is more frequent in the community. Negative feedback promotes diversity, because microbes provide  an advantage to whichever species is rare, allowing it to rise in frequency and avoid extinction (Fig. [-@fig-fig1]C-D). Subsequent descriptions of this model further extended the implications of $I_S$ for species coexistence, as in @Bever_2003:
+
+\vspace{-1em}
+
+> "When the interaction coefficient is positive ($I_S > 0$), the soil community dynamics generate net positive feedback on plant growth and the competing plant species do not coexist. When the interaction coefficient is negative ($I_S < 0$), the soil community dynamics generate net negative feedback on plant growth, and, as a result the competing plant species do coexist."
+
+```{=html}
+<!--\vspace{-1em}
+
+\noindent This interpretation is based on a few simplifying assumptions, which I discuss in the [following section](#revisiting-assumptions).
+-->
+```
+
+The second key contribution of @Bever_1997 was a clear explanation of the steps necessary for quantifying $I_S$ empirically. This experimental design builds on important features of the parameters $m_{iX}$, and of the interaction coefficient $I_S$. Recall that in this model, microbes only affect the rate of exponential population growth for the two plant species (Fig. [-@fig-fig1]B-C). Assuming that biomass accumulation dynamics of individual plants mirror the population growth process (but see @Fridley_2017), one can estimate the $m$ parameters with the log-transformed biomass of plants grown in different soil microbial contexts: $m_{iX} = log(B_{iX}) - log(B_{i0})$.[^why-log-biomass] Here, $B_{iX}$ is the biomass of plant $i$ in soil community $X$, and $B_{i0}$ is plant $i$'s biomass in reference (unconditioned) soil. In fact, @Bever_1997 showed that the data requirements for quantifying $I_S$ simplify even further. Due to the arrangement of the $m_{iX}$ terms, empirical quantification of $I_S$ only requires biomass data of plants grown with a conspecific- or heterospecific-conditioned soil community; growth in unconditioned soils cancels out altogether:
+
+\vspace{-2em}
+
+
+```{=tex}
+\begin{multline}\label{eq-Is-biomassCancel}
+I_S = 
+    \big[\overbrace{(log({B}_{1A}) - \cancel{log(B_{10})})}^{m_{1A}} + 
+    \overbrace{(log({B}_{2B}) - \bcancel{log(B_{20}))}}^{m_{2B}}\big] - \\
+    \big[\overbrace{(log({B}_{1B}) - \cancel{log(B_{10})})}^{m_{1B}} +
+    \overbrace{(log({B}_{2A}) - \bcancel{log({B}_{20})})}^{m_{2A}}\big] 
+\notag
+\end{multline}
+```
+
+
+\noindent Building on this insight, @Bever_1997 proposed a two-phased empirical design that yields all the necessary $B_{iX}$ terms for quantifying $I_S$. This design has been described in detail elsewhere [e.g. @Bever_2012], and is summarized in Fig. [-@fig-figS1]. 
+
+
+![\textbf{Schematic and simulated model dynamics from Bever et al. (1997)'s canonical framework for plant-soil feedback.} \newline {\textbf A.} The model simulates the dynamics of two plant species ($1$ and $2$) that cultivate distinct soil communities ($A$ and $B$). Both plant species have some growth rate in unconditioned soils (set to 0.16 for the simulations in panels B-D), which is increased or decreased depending on the state of the microbial community, as described by the arrows (e.g. when the soil only reflects microbial community $A$, plant 1's growth rate decreases by $0.05$, and plant 2's growth rate increases by 0.11). Following \ref{eq-IS}, microbes generate $I_S <0$ (negative feedback) for this set of parameters.  \textbf{B. } Plant population dynamics when each species is growing separately in soils that are unconditioned (thin solid line), wholly conditioned by Plant 1 ($S_A = 1$, dashed line), or wholly conditioned by Plant 2 ($S_B = 1$, dotted line). Note that these scenarios are only illustrative and not biologically plausible dynamics - for example, as plant 1 grows, it should become impossible for the soil state $S_B = 1$ to persist, as plant 1's conditioning effects become evident. \textbf{C. } When both plants grow together, the soil community dynamically changes between $S_A = 1$ and $S_B = 1$, as determined by the plant composition. Both plants experience exponential growth, at a rate determined by the composition of the soil. In this simulatation each species' abundance periodically rises above the other's. \textbf{D. } The relative abundance (frequency) of each plant species. Microbes promote coexistence in this system by generating netral oscillations.](figures/fig1.pdf){#fig-fig1 fig-align="center"}
+
+### Limits to inferring coexistence from $I_S<0$ {#revisiting-assumptions}
+
+\noindent While the insights from @Bever_1997 have enabled a vast body of empirical work [synthesized most recently in @Crawford_2019; see also @Kulmatiski_2008; @Bever_2012], several recent studies have highlighted limitations to inferring microbially-mediated plant coexistence on the basis of negative feedback alone [@Ke_2015; @Kandlikar_2019; @Beckman_2023; @Broekman_2019]. The main takeaway from this work is that while $I_S<0$ is a necessary condition for coexistence in the @Bever_1997 model, stabilizing effects of microbes do not *guarantee* long-term plant coexistence (Fig. [-@fig-fig2]).  Part of the issue is that additional information that is not captured in $I_S$ is required for accurate inferences of coexistence.  This is not a new result per se: the original analysis and interpretation of $I_S$  operates within the assumption that the soil microbes do not disproportionately harm or benefit one species more than the other (see pp. 563 of @Bever_1997). However, in practice, this assumption is rarely tested, and the renewed clarity that one species can exclude the other despite $I_S<0$ represents a departure from the longstanding interpretation that the sign of this metric reflects whether or not microbes drive species coexistence. I discuss theoretical metrics and experimental designs that help overcome this assumption in the [following section](#overcoming-Is).
+
+@Bever_1997's analysis also builds on the assumption that neither species has a disproportionately strong conditioning effect on the soil ($v$ is not too small or large). While very few studies have explicitly tested this assumption, recent results raise questions about its generality. For example, we now know that differences in the duration of soil conditioning can lead to variation in the microbial community, as well as in strength of plant-soil feedback [e.g.  @Wubs_2017; @Hannula_2019; @Ke_2021]. Similarly, studies have found that low-abundance non-native species can have outsized effects on soil microbial communities [@Peltzer_2009], pointing to substantial interspecific variation in soil conditioning strength. While the magnitude of $v$ does not change the coexistence criteria in @Bever_1997 model (see Appendix S1), strong asymmetries in conditioning strengths have important implications for the system's temporal dynamics. For example, for a given set of $m_{iX}$ parameters that should result in coexistence, $v >> 1$ or $v<< 1$ result in extended periods of dominance by one species (Fig. [-@fig-figS2]). This increases the risk of stochastic extinction of the rare species. Very few studies have systematically evaluated the consequences if varying conditioning strengths on the feedback process (but see @Ke_2021b), and further theoretical and empirical evaluation of microbial conditioning dynamics should yield fruitful insights.
+
+![\textbf{Soil microbes can drive plant species exclusion even when they generate negative feedback.} \newline {\textbf A.} In this simulation, plant 1's performance is suppressed by its own microbial community $A$, but boosted by microbial community $B$. On the other hand, plant 2's performance is increased by either conditioned community. The $m$ terms yield the same negative $I_S$ as in Fig. 1. \textbf{B. } Population growth dynamics for the two plants when soil is entirely conditioned by one plant or the other. \textbf{C. } When the two plants grow together, plant 2 has a higher rate of exponential growth than plant 1 at all times. \textbf{D. } Due to differences in the rates of exponential growth, the gulf in the two species' relative frequencies grows until the system is effectively entirely dominated by plant 2, and plant 1's frequency is nearly zero. \textbf{E. } The result shown in panels A-D is not exceptional: when microbes drive negative feedback ($I_S<0$), the two plant species coexist in only about half of the simulation runs; in the other half, only one species persists. While coexistence is never possible under positive feedback ($I_S>0$), inferring plant dyanamics on the basis of $I_S$ alone obscures the fact that in some cases, microbes give rise to frequency-dependent priority effects (species that is initally more abundant excludes the other), while in other cases, the same plant wins regardless of its initial frequency. Values of $m_{iX}$ were drawn from a uniform distribution (minimum value: -0.5, maximum value: 0.5). The density graph summarizes outcomes from 2000 simulation runs.](figures/fig2.pdf){#fig-fig2 fig-align="center"}
+
+### How to more thoroughly evaluate plant coexistence with soil feedbacks? {#overcoming-Is}
+
+\noindent Given that $I_S<0$ does not guarantee plant coexistence in the @Bever_1997, what other information can help generate more reliable inferences? At least two analytical approaches address this question, yielding complementary insights. Both approaches are detailed in Appendix S1 and summarized here. The first approach was outlined in the original model analysis, but has received little empirical attention. This approach proceeds by identifying parameter combinations that allow for equilibrium conditions that are both feasible (meaning that all players are present with frequency > 0) and neutrally stable (meaning that perturbations to the equilibrium do not cause the system to collapse to monodominance). 
+
+A second approach for identifying coexistence outcomes in the @Bever_1997 model was implemented in @Kandlikar_2019, and builds on the mutual invasibility requirement for pairwise species coexistence [@Turelli_1978; @Chesson_1989; @Grainger_2019]. Applying the invasion criterion to the @Bever_1997 model means that the plants can coexist if each species can successfully establish a foothold into an equilibrium monoculture of the other plant (and its corresponding soil community). Each species' population growth rate as it begins (or fails) to establish in its competitor's monoculture is its "low-density growth rate", or LDGR.[^ldgr-name] For the @Bever_1997 model, the LDGR for each species is given by the following:
+
+\vspace{-1.5em}
+
+$$\text{LDGR}_{1\to2}= m_{1B} - m_{2B}~~~\text{and}~~~\text{LDGR}_{2\to1}=m_{2A}-m_{1A}$$
+
+\noindent Coexistence requires that each species have a positive LDGR, meaning that the following inequalities should be true:
+
+\vspace{-1.5em}
+
+$$m_{2B} < m_{1B}~~~\text{and}~~~m_{1A} < m_{2A}$${#eq-feasibililty}
+
+\noindent As show in Appendix S1, this is identical to the coexistence requirements identified by the first approach, and it mirrors the well-established criteria for two-species coexistence in a Lotka-Volterra competition model. 
+
+Evaluating [-@eq-feasibililty] is enough for evaluating whether or not species can coexist in the @Bever_1997 model, but further decomposing the LDGRs can yield useful insights into the biological basis for coexistence outcomes. Specifically, following the approach described in @Chesson_2000 and @Chesson_2018, one can further decompose LDGRs into two terms. One term captures the degree to which the soil communities increase (or decrease) the LDGR of both species, thereby favoring (or disfavoring) coexistence. The second term captures the degree to which the microbial communities disproportionately favor one plant species over the other, thereby increasing the LDGR of one species and decreasing the LDGR for the other. @Kandlikar_2019 derived these terms for @Bever_1997's model which, following convention [@Chesson_2000; @Chesson_2018], are termed as the microbially mediated "stabilization" and "fitness difference", respectively. Whether or not species can coexist is determined by the balance of these two effects. Specifically, coexistence requires the following to be true: 
+
+
+$$\overbrace{-\frac{1}{2}\big((m_{1A}+m_{2B})-(m_{2A}+m_{1B})\big)}^{\text{stablization}} > \text{abs}\bigg(\overbrace{\frac{1}{2}(m_{1A}+m_{1B}) - \frac{1}{2}(m_{2A}+m_{2B})}^{\text{fitness difference}_{1,2}}\bigg)$$ {#eq-stabFd-Ineq}
+
+\noindent Algebraically, the expression above is equivalent to [-@eq-feasibililty] (see Box S1.2 in Appendix S1). When this inequality is met, both species have positive LDGRs. Alternately, when microbes primarily act to destabilize plant interactions ($\text{stabilization}<0~~\text{and}~~ \text{abs(stablization)} > \text{abs(fitness difference)}$), both species have negative LDGRs, and microbes give rise to frequency-dependent priority effects (either species can form a monoculture, but the two species cannot coexist [@Yan_2022; @Zou_2023]). When fitness differences overwhelm the strength of (de)stabilization, one species has negative LDGR, and the other has a positive LDGR. In this case, microbes drive exclusion of the species with negative LDGR.
+
+
+Evaluating microbial effects on the basis of the (de)stabilization and fitness differences provides valuable insight into how their net effects arise. For example, the accumulation of species specific pathogens favors stabilization, but host-specific pathogens can nevertheless drive exclusion if one plant suffers more from its pathogens than the other (strong fitness differences). On the other hand, when plants are equally susceptible to pathogens, even a small amount of host specificity can promote stable plant coexistence.  Moreover, framing soil microbial effects in terms of the degrees to which they generate stabilization and fitness differences unlocks the potential to integrate soil microbes into a broader theoretical framework that is actively being applied for studying how plant coexistence is mediated by pollinators [@Johnson_2022; @Lanuza_2018], seed consumers [@Petry_2018], foliar pathogens [@Uricchio_2019], facilitation  [@Bimler_2018], and a host of other abiotic and biotic processes.
+
+### Implications for empirical studies
+
+\noindent As with $I_S$, the complete coexistence criterion  in [-@eq-stabFd-Ineq] is simply a linear combination of the four $m_{iX}$ terms that capture microbial effects on plant performance. In principle, this might suggest that evaluating coexistence requires the same data as is required for  quantifying $I_S$. However, in practice, evaluating coexistence  requires more information. This distinction has to do with the role that plant performance in reference (uncultivated) soils plays in determining $m_{iX}$. As shown above,  plant biomass in reference soil cancels out of the equation for $I_S$. This is also true for calculating stabilization; indeed, stabilization is simply equal to $-\frac{1}{2}I_S$. However, plant growth in reference soil does not cancel out of the fitness difference expansion:
+
+
+\vspace{-3em}
+
+```{=tex}
+\begin{multline}
+\text{fitness difference}_{1,2} = \frac{1}{2}\big[\overbrace{(log(B_{1A})-log(B_{10}))}^{m_{1A}} + \overbrace{(log(B_{1B})-log(B_{10}))}^{m_{1B}}\big] ~~ - \\ \frac{1}{2}\big[\overbrace{(log(B_{2A})-log(B_{20}))}^{m_{2A}} + \overbrace{(log(B_{2B})-log(B_{20}))}^{m_{2B}}\big]
+\notag
+\end{multline}
+```
+
+\noindent The trivial implication of this result is that experiments aiming to infer plant coexistence in the @Bever_1997 model should include an additional response phase treatment in which plants are grown in with a reference soil community [@Kandlikar_2019;  @Beckman_2023].[^reference-soil-names] However, theory alone does not provide an unambiguous guide for defining the "correct" reference soil to use in an experiment. The original parameter descriptions only define the reference soil by negation, as soil *without* a conditioning history of either focal plant [@Bever_1997]. In principle, this definition could apply equally well to any soils where the focal species have not grown.  @Kandlikar_2021 suggest that the ideal reference soil for experiments reflects the microbial community that would exist in the relevant field system when the focal plant species are absent. Alternatively, @Beckman_2023 suggest soils conditioned by plants that associate with mycorrhizal fungi from different guilds or that have different geographic origins than the focal species as potential references. However, such soils are unlikely to include even low abundances of specialist pathogens or mutualists that the focal species might encounter in nature, which could affect the estimation of fitness differences and stabilization. When studies replace a specific conditioning phase and instead inoculate response phase pots with soils from adults in the field, soil from bare patches devoid of vegetation may be an appropriate reference. Many past studies included controls of plants growing in sterilized soils. While comparisons to sterilized soils can yield important insights into the effects of the soil microbiome as a whole on plant coexistence [@Yan_2022; @Ke_2023], such soil is not an appropriate reference for isolating the *effects of the conditioning/feedback process itself* [@Yan_2022; @Abbott_2021]. 
+
+
+It is worth noting although the importance of reference soil growth is underscored by its prominence in the fitness difference calculation, the choice of reference soil plays a role in determining the outcome of all two phased feedback studies - including ones designed to measure $I_S$ specifically rather than coexistence more generally. For example, conditioning soils from a a reference that contains low densities of the focal species' specialist pathogens can drive stronger stabilization (if the specialist pathogens proliferate during the conditioning phase) than conditioning from a reference that is completely lacking in specialist pathogens. In other words, all two-phase studies are built on implicit choices of a reference soil state. When the goal is to evaluate coexistence, plant growth in this same baseline soil community should be used to estimate $B_{i0}$.  Preserving the reference soil community during the conditioning phase presents methodological challenges, as microbial communities are dynamic entities whose members grow and die [@Abbott_2021]. Thus, future studies that couple reference soil treatments with assays of microbial activity/composition (especially approaches that also quantify microbial abundances [@Tkacz_2018]), and/or include carefully designed controls to evaluate the effects of such microbial dynamics will help paint a more complete picture of how soil communities shape plant coexistence. 
+
+## Soil microbial feedbacks in more diverse plant communities
+
+\noindent While studies of plant coexistence are often motivated by diverse communities , microbial mediation of plant coexistence is usually evaluated among species pairs. While pairwise analyses provide important insights, extending these results to interpret microbial effects on diverse plant systems can be challenging [@Levine_2017; @Barabas_2016]. Several studies have addressed this gap through extensions to the classic two-species plant-soil feedback model. An early advance was that of @Kulmatiski_2011, who developed a model of three plant species and showed that the additional complexity of such a system can yield routes to coexistence that are not identified from pairwise analyses. For example, cyclic plant dynamics can arise even when each species performs better in its own soil community than in other species' soil (i.e. $m_{1A}> \{m_{1B}, m_{1C}\}$) --  an outcome that seemingly contradicts the two-species coexistence criteria ([-@eq-feasibililty]). More recently, @Miller_2022 extended the classic plant-soil feedback model to an arbitrary number of species and found that without any additional assumptions beyond those in @Bever_1997, robust coexistence of more than two species is virtually impossible. While it is possible to identify precise parameter sets yield oscillatory coexistence in this $n$-species model, this coexistence is fragile: minuscule perturbations to plant frequencies or to parameters cause the system to collapse to low-diversity (1 or 2 species). They conclude that stable multispecies coexistence is unlikely without accounting for other processes that regulate the dynamics of plants or of soil microbes. One such source of regulation is to more thoroughly integrate plant-microbe interactions and plant competition into a unified framework, a topic I return to in a [following section](#what-about-competition). 
+
+Another potential source of regulation is through incorporating density-dependence in the microbial dynamics. This approach was implemented for two-species systems in @Eppinga_2006 and @Aguilera_2011, and was extended to a multi-species plant system by @Mack_2019. This analysis identified a range of pathways through which microbes can enable multispecies plant coexistence, ranging from strict negative feedback to strict intransitivity in the system. Building on this model, @Eppinga_2018 analytically derived an $n$-species analogue of the pairwise stabilization metric termed $I_C$. As with $I_S$, negative values of $I_C$ predict negative community-wide feedback, which is necessary for  all $n$ species persist in the system (see Appendix S2). Similar caveats also apply: while coexistence of all species is promoted by $I_C < 0$, negative community feedback does not guarantee coexistence. Importantly for empirical application, quantifying $I_C$ only requires a complete performance matrix (i.e. all combinations of $B_{iX}$), the likes of which are generated from pairwise plant-soil feedback studies of >2 species. 
+
+### Implications for empirical studies
+
+\noindent To date, the vast majority of experiments interested in evaluating microbial effects in diverse communities have done so by inferring system-wide feedback from contrasts of pairwise $I_S$ at the species level (statistical summary of all $I_S$ values involving species $i, j, k,...$ [@Mangan_2010; @Bauer_2015]), or whole-community level [@Stein_2020; @Pizano_2019; @Dudenhoffer_2022]. While such statistical averaging of pairwise metrics can provide valuable insights, theory suggests that inferring multi-species effects such calculations comes with pitfalls [@Barabas_2016; @Spaak_2023] that have not yet been formally evaluated in the context of plant-soil feedback. The theoretical advances in @Eppinga_2018 suggest a robust alternative that is also  frictionless, in that it does not require changing the two-phase design (Fig. [-@fig-figS1]). In systems where the model's assumptions regarding self-regulation of microbial dynamics are expected to apply, quantifying community-wide feedback through $I_C$ provides a theoretically justified measure of microbial feedbacks on multispecies plant community structure. Moreover, parameterizing $I_C$ requires the same information necessary to quantify species- or community-average $I_S$, and can yield surprising results. For example, @Dudenhoffer_2022 find that soil microbes most strongly *stabilize* pairwise plant coexistence under drought, but quantifying $I_C$ for species triplets suggest that microbes most strongly *destabilize* multispecies systems under drought (Fig. [-@fig-figS3] and Appendix S2).  Such analyses point to the value of future studies linking data with theoretically rigorous metrics of multispecies coexistence dynamics for advancing our understanding microbial regulation of plant dynamics in diverse systems.
+
+## Contextualizing plant-microbe interactions relative to plant-plant interactions {#what-about-competition}
+
+\noindent  Plant--microbe interactions are one of many processes that simultaneously structure plant communities. While models and experiments that isolate the soil conditioning/response process help establish the *potential* role of soil microbes in regulating plant communities, quantifying their contributions to plant coexistence in nature requires contextualizing this process relative to that of other processes like resource competition [reviewed in @Lekberg_2018] or herbivory [@Heinze_2020]. An early conceptual advance towards this goal was the mathematical model of @Bever_2003, which  integrated microbial feedbacks with intra- and inter-specific competition among plants. A key result from this work was that sufficiently strong negative feedback from soil microbes can promote coexistence of plants even in the face of competition-mediated species exclusion. However, two features of this framework limit its utility in helping unravel the relative contribution of soil microbes and direct competition to species coexistence. First, microbial and competitive effects are defined with different units (microbial effects are based on their frequencies, competitive effects are based on plant densities), which makes it difficult to evaluate their relative strengths [@Miller_2022]. Second, the feedback framework focuses on the differential conditioning of background soil microbes, and does not easily accommodate environments lacking a soil community altogether -- an important theoretical construct for defining a baseline against which to contextualize the effects of soil microbes.[^stein-note] Modeling how the absolute densities of microbes (rather than relative frequencies) affect plant population dynamics can help overcome some of these limitations [@Ke_2020; @Kandlikar_2019]. These changes come with some cost of empirical tractability, but most relevant parameters for such models can nevertheless be quantified from pot experiments tracking plant growth without explicit measurements of microbe dynamics [@Ke_2020; @Ke_2023]. The design and analysis of pot  experiments will vary depending on whether the goal is to focus on the effects of soil microbes as a whole or of the conditioning process specifically, and whether microbes are only thought to affect intrinsic growth rates, density dependence, or both processes ([Fig. -@fig-fig3]). Further departures from the feedback framework, which implies a strict correspondence between the number of plant species and microbial communities, also yield important insights. For example, tracking plant species' interactions with mutualistic vs. harmful microbes can yield a more predictive understanding of conditions under which soil microbes contribute to coexistence vs. species replacement [@Jiang_2020; @Schroeder_2020]. Integrating the role of soil microbes as mutualists, pathogens, and decomposers into a mechanistic framework for resource competition is also a compelling a path towards understand the relative importance of microbes on biodiversity maintenance in nature [@Chung_2023].  
+
+### Implications for empirical tests
+
+\noindent  Evidence that soil microbial effects scale up to structure whole plant communities largely comes from studies that correlate outcomes from feedback experiments to properties like species' relative abundance [meta-analyzed by @Reinhart_2021], community stability [@Chung_2019], or productivity [@Forero_2022]. While such work provides compelling evidence for the importance of soil microbes, the lack of an integrative framework for studying their effects stymies our ability to make sense of seemingly contradictory results. For example, species whose performance is more strongly suppressed by conspecific-conditioned soil communities tend to be less abundant on the landscape in some systems [@Klironomos_2002; @Mangan_2010], but precisely the opposite pattern arises elsewhere [@Corrales_2016; @Maron_2016]. In yet other systems, feedback strength and abundance are unrelated [@Reinhart_2012]. A unified framework that integrates microbial effects with other processes structuring plant communities can offer useful insights for making sense of the diversity of patterns observed in nature. For example, explicitly integrating plant-soil feedbacks and resource competition suggests that soil microbes drive plant dynamics most strongly when nutrients are less limiting; microbial effects are unlikely to affect plant competition when resource dynamics are slow [@Kandlikar_2019]. Qualitatively, such a result is consistently with @Corrales_2016's conclusion that effects of slow soil nitrogen cycling override any negative plant-soil feedbacks in driving the monodominance of an ectomycorrhizal tree in a tropical montane forest. Moving forward, designing experiments for simultaneously testing multiple mechanisms of diversity maintenance rather than isolating single processes [e.g. @Chung_2016; @Stein_2020] is a challenging but essential step towards advancing our understanding of how microbes contribute to plant community dynamics in nature.
+
+
+![\textbf{Potential design of a pot experiment that yields a more complete understanding of how microbes shape plant interactions.} \newline Arrows labelled \textbf{A} fall under the purview of the classic pairwise feedback framework; these comparisons help predict coexistence when plants only interact with one another through the soil community. Arrows \textbf{B} provide insight on how the whole microbial community - and not just the conditioning process - shapes coexistence. Arrows \textbf{C, D}, and \textbf{E} quantify  plant-plant interactions (both intra- and inter-specific) in the absence of microbes, in the absence of the conditioning process, and when microbes are present and conditioned, respectively. Differences in arrows C-E  can be used to infer how direct plant interactions and soil microbes jointly shape coexistence outcomes. For simplicity this figure only illustrates the soil treatments for one plant species; similar soil treatments are also required with plant 2 as the focal species for evaluating coexistence. Note that this design differs from the 'minimal design' of Ke and Wan (2020) by including individual plant growth in different soil backgrounds; these treatments can be omitted if microbes are thought to only affect the nature of density dependence rather than plants' intrinsic growth. As highlighted in Ke and Wan (2023), additional density treatments may be required to evaluate the nature of density dependence in some systems.](figures/fig3-experiment-comparisons.pdf){#fig-fig3 fig-align="center" fig-pos="H"}
+
+
+## Conclusion
+
+
+\noindent Soil microbes play a key role in the dynamics of all terrestrial ecosystems. A tight integration of theory and experiments over the past few decades has enabled rapid and sustained progress in our understanding of how soil microbes shape plant species coexistence. The theoretical advances reviewed here point to three areas of empirical research that should yield important insights:
+
+1. While now know that soil microbes can drive positive or negative feedback in a wide range of ecosystems, existing evidence also suggests that any such negative feedback rarely results in long-term coexistence  [@Yan_2022]. Evaluating the conditions under which soil microbes themselves give rise to pairwise *coexistence* (versus exclusion or priority effects)  remains an open question.
+
+2. While statistical averaging of pairwise metrics can provide useful insights into microbial effects in diver communities, theory shows that such analyses come with some pitfalls. @Eppinga_2018's analytically-derived community-wide stabilization metric can be parameterised with data from fully factorial feedback studies, and doing so has the potential to yield insights into microbial effects on multispecies systems that are masked in pairwise analyses.  
+
+3. Designing pot experiments with treatments informed by theoretical models that integrate soil microbial effects with those of other processes like resource competition [e.g. @Ke_2020; @Ke_2023] will enable a more complete understanding of the conditions under which soil microbial effects  scale up to affect plant community structure. 
+
+\noindent Continuing the interplay between theory and data is critical not only to improve our fundamental understanding of how soil microbes shape plant coexistence, but also promises to generate actionable insights into the role of soil microbes in pressing environmental challenges like invasive species management habitat restoration. 
+
+## Data/code availability
+\noindent No data were used in this manuscript. Code for rendering all figures and manuscript documents is available at XXX for the review process and will be publicly archived upon acceptance. 
+
+## Acknowledgements
+
+\noindent I thank Xinyi Yan, Po-Ju Ke, and Madeline Cowen for feedback (and much-needed encouragement) on this manuscript. Conversations with Jonathan Levine, Meghna Krishnadas, Priyanga Amarasekare, Marcel Vaz, Karen Abbott, Gyuri Barabas, Adriana Corrales, Yadugiri VT, and Stan Harpole have contributed to my understanding of plant-microbe interactions. Thanks also Richard Ita and members of Daijiang Li's lab for feedback, and thanks in advance to the editors and reviewers for engaging with this work.
+
+
+<!--Footnotes-->
+
+
+[^why-log-biomass]: There is some ambiguity in the literature about the importance of log-transforming biomass measurements. Some authors omit this step entirely (or omit it from the reported methods) (e.g. @Bauer_2017); some employ other transformations (e.g. square root transformation, @Smith_2015); and some effectively apply a double log transformation (e.g. @Dudenhoffer_2022, in which biomass is first modeled with a log-family generalized linear model, and model coefficients are again log-transformed for calculating $I_S$). When log-transformation *is* reported, it is often justified on the basis of the statistical properties (skewness) of the data [e.g. @Duell_2023].
+\newline\newline
+While ensuring that the appropriate data transformations are applied prior to model fitting is of course essential, log-transforming biomass data from plant-soil feedback experiments before calculating $I_S$ serves more than just a statistical purpose. A key (but implicit) assumption to calculating $I_S$ on the basis of biomass data is that plant growth during the response phase of experiments is an exponential process (mirroring the exponential population growth of the underlying dynamics model). Assuming that the final biomass value is the result of an exponential growth process, log-transforming the final biomass converts the measured values into the *rate* of biomass accumulation [@Blackman_1919] - i.e., the biomass analog of the exponential population growth rate parameters $m_{iX}$.
+
+
+[^ldgr-name]: The low-density growth rate is more commonly called the "invasion growth rate" in the coexistence literature (e.g. @Grainger_2019, @Ellner_2019, @Chesson_2018), including in @Kandlikar_2019, but given the potential confusion between this abstract property and the separate process of ecological invasions by non-native plants, where plant-soil microbe interactions can also play an important role, I follow @Lavorel_1995 and @Hallett_2023 in using the term "low-density growth rate" in this manuscript. $\text{LDGR}_{1\to2}$ is the growth rate of Plant 1 as it grows into a monoculture of Plant 2, and vice-versa for $\text{LDGR}_{2\to1}$ 
+
+[^fd-magnitude]: Note that for any given pair, the fitness difference can be calculated by setting either plant $1$ or $2$ as the species that derives a relative advantage from the microbes; what matters for the qualitative coexistence outcome is the *magnitude* of this fitness difference.
+
+[^reference-soil-names]: Elsewhere, the reference (uncultivated) soils have been called *unexposed*, *naive*, *untrained*, *unconditioned*, or *uncultured* soils (e.g. @Bever_1997; @Abbott_2021; @Maron_2015; @Bezemer_2018; @Beckman_2023, respectively); the common implication here is that this soil should not reflect the conditioning effect of the focal plant species. 
+
+[^stein-note]: For example, @Stein_2020 use an extended version of the @Bever_2003 model to show that the stabilizing effects of soil microbes exceed those of direct competition, but the base "competition" and "microbially mediated competition" outcomes (models a and b in that paper) differ only in what soil treatments were used to fit a pair of parameters ($K$ and $c_{ij}$ in sterilized vs. live soil). This suggests that there are important aspects of the system's biology (namely, that density-dependence changes with microbial context, regardless of soil conditioning) that are not captured in the model.
+
+\clearpage
+
+\nolinenumbers
+
+
+## References
+
+\vspace{2em}
+
+::: {#refs}
+:::
+
+\clearpage
+
+## Supplemental Figures
+
+```{=tex}
+\def\thefigure{S.\arabic{figure}}
+\setcounter{figure}{0}
+```
+
+![\textbf{Schematic of the two-phase feedback experimental design.} \textbf{A.} In the first phase of the experiment, individuals (or monocultures) of each species are grown in soils that are identical at the beginning of the experiment.  Over time, the plants grow, and the soil microbial community changes to reflect each species' unique conditioning effect (represented by distinct soil colors). \textbf{B. } In the second phase of the experiment, individuals of each species are grown, this time soils conditioned by conspecifics or by heterospecifics in the previous phase. A small volume of the conditioned inoculum is added to pots that primarily contain a common sterilized background soil (often <= 10\% of the total soil volume in the pot is live conditioned inoculum, and the rest is bulk sterilized soil). Thus, soils should only differ in terms of their microbial community, and any nutritional differences that arise during the conditioning phase should not have a stong effect on plant growth in the response phase.](figures/figS1.pdf){#fig-figS1 fig-align="center" fig-pos="H"}
+
+![\textbf{Variation in species' conditioning strengths affects the temporal dynamics of species coexistence} \textbf{A.} This simulation uses identical $m{iX}$ parameters as in Fig. 1 of the main text, but now, $v=5$, which means that plant 2 conditions the soil towards $S_B$ more strongly than does plant 1 towards $S_A$. \textbf{B. } Population growth dynamics for the two plants when soil is entirely conditioned by one plant or the other; this is identical to Fig. 1B. \textbf{C. } When the two plants grow together, both plants have periods when they overtake the other in abundance, but there is an extended period of time when plant 1 is substantially more abundant than plant 2 - punctuated by brief periods during which plant 2 overtakes plant 1 in abundance \textbf{D. } Due to differences in the rates of exponential growth of the species over extended periods of time, the gulf in the two species' relative frequencies grows until the system appears to be effectively entirely dominated by plant 1. Only over long periods of time does it become evident that plant 2 can rebound in abundance.](figures/figS2.pdf){#fig-figS2 fig-align="center" fig-pos="H"}
+
+
+![\textbf{Microbial stabilization of species pairs and triplets under low, medium, and high watering regimes}. This figures shows results from an analysis estimating Eppinga et al. (2018)'s $I_C$, the multispecies analog of the pairwise interaction metric $I_S$, using data from Dudenhoffer et al. (2022). As in the original publication, we find that among species pairs, microbes exert stronger stabilization under drought ("low watering") than under high-watering regimes. However, among species triplets, the trend is reversed, with microbes generating slightly positive (destabilizing) feedbacks under drought, and slight negative (stabilizing) feedback under high-watering. Analysis details are available in Supplement S3, as are similar figures for 4 to 8 species communities that can be assembled from  Dudenhoffer et al. (2022)'s study; these show that the the result shown for triplets here generaly extends to more diverse communities as well.](figures/figS3.pdf){#fig-figS3 fig-align="center" fig-pos="H"}
+

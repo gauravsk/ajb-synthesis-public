@@ -1,0 +1,338 @@
+---
+title: ""
+author:
+  - name: Gaurav Kandlikar
+    orcid: 0000-0003-3043-6780
+    email: gkandlikar@lsu.edu
+    affiliations:
+      - name: Department of Biological Sciences, Lousiana State University
+        address: Life Sciences Annex A363
+        city: Baton Rouge
+        state: LA
+        postal-code: 70803
+format: 
+  pdf:
+    include-in-header: 
+      text: '\usepackage{lineno,cancel,setspace, indentfirst, environ}  \usepackage[skip=12pt plus1pt, indent=0pt]{parskip}'
+bibliography: ../bibliography.bib
+csl: ../ajb.csl
+pdf-engine: xelatex
+indent: true
+geometry:
+  - bottom=2.5cm
+  - top=2.5cm
+editor_options: 
+  chunk_output_type: console
+---
+
+\def\theequation{S2.\arabic{equation}}
+
+# Appendix S2: Quantifying the community-wide stabilization metric $I_C$ with empirical data
+
+**Contact**: Gaurav S. Kandlikar, [gkandlikar@lsu.edu](mailto:gkandlikar@lsu.edu)
+
+\noindent With some modifications to the nature of soil microbial dynamics, @Mack_2019 and @Eppinga_2018 extended the two-species feedback model of @Bever_1997 to evaluate microbial effects on coexistence in multi-species plant communities. Details of this multispecies model derivation and analysis are provided in the original publications. In this appendix, I demonstrate a practical application of quantifying the feedback metric from @Eppinga_2018 using empirical data from @Dudenhoffer_2022. 
+
+By analyzing an $n$-species plant-soil feedback model, @Eppinga_2018 showed that whether microbes generate positive or negative feedback is determined by the sign of the metric $I_C$, which serves as a community-wide analog of the two-species term $I_S$. Extending from the notation of the two-species model used in the main text, plant species are denoted $1, 2, \dots, n$, and the corresponding microbial communities are denoted $A, B, \dots, X$. The effect of a given microbial community $x$ on plant $i$ is denoted $m_{ix}$. One can arrange the $m$ terms into an interaction matrix $\mathbf{A}$:
+
+$$
+\mathbf{A} = 
+  \begin{bmatrix}
+    m_{1A} & m_{1B} & \dots & m_{1X}\\
+    m_{2A} & \dots & \dots & m_{2X} \\
+    \dots & \dots & \dots & \dots \\
+    m_{nA} & \dots & \dots & m_{nX}
+  \end{bmatrix} 
+$$
+
+\noindent One can use this interaction $\mathbf{A}$ to calculate the community-wide stabilization $I_C$ as follows:
+
+$$
+I_C = (-1)^n\sum_{j=1}^{n}\text{det }\mathbf{A}_j
+$${#eq-S2.1}
+
+\noindent Here, $\mathrm{det}$ represents the matrix determinant, and $\mathbf{A_j}$ denotes the interaction matrix $A$ with the $j$'th column replaced with a vector of 1s. Note that in two-species systems ($n = 2$), $I_C = I_S$, as detailed in Box S2.1.
+
+The main text presents the caveats of using $I_S$ to predicting pairwise species coexistence. Such caveats also exist for $I_C < 0$. While negative values of $I_C$ indicate negative feedback (stabilizing effects on community dynamics), they do not guarantee that all species can coexist. In addition to $I_C<0$, community-wide coexistence also requires that each species can persist at non-zero frequency at equilibrium: 
+
+$$ 0 < \hat{P_i} = \frac{\text{det }\mathbf{A}_i}{(-1)^n\sum_{j=1}^{n}\text{det }\mathbf{A}_j}< 1 $${#eq-S2.2}
+
+\noindent For the same reason that growth in reference soil is essential for calculating pairwise fitness differences (see Main Text), such data is also required for quantifying the equilibrium frequency.
+
+
+
+### {#callout-2}
+
+::: {.callout-note appearance="minimal" icon=false}
+## Box 1: Correspondence between $I_C$ and $I_S$ when $n=2$
+
+\noindent The interaction matrix for two species is as follows:
+
+$$\mathbf{A} =   
+  \begin{bmatrix}
+    m_{1A} & m_{1B} \\
+    m_{2A} & m_{2B}
+  \end{bmatrix} 
+$$
+Following Eqn. \ref{eq-S2.1} above, $I_C$ for this 2-species system ($I_C$) is calculated as follows:
+
+$$I_C = (-1)^2\sum_{j=1}^{2}\text{det } {A}_j  = (-1)^2   \bigg(\text{det}\bigg(\begin{matrix}1 & m_{1B} \\ 1 & m_{2B} \end{matrix} \bigg)+ \text{det} \bigg( \begin{matrix} m_{1A} & 1 \\ m_{2A} & 1\end{matrix}\bigg) \bigg)$${#eq-S2.3}
+
+\noindent Given that $\text{det}\bigg(\begin{matrix}a & b \\c & d\end{matrix}\bigg) = ad-bc$,  Eqn. \ref{eq-S2.3} simplifies as:
+
+$$I_C = (-1)^2((1*m_{2B} - m_{1B}*1) + (m_{1A}*1 - 1*m_{2A}))$$
+Through algebra, this simplifies to $I_C = m_{2B} - m_{1B} + m_{1A} - m_{2A}$, which is equivalent to the pairwise $I_S$.
+:::
+
+## Quantifying $I_C$ with empirical data
+
+This subsection provides `R` code for calculating $I_C$ from the data collected for @Dudenhoffer_2022's study, which evaluated how drought affects plant-soil feedback outcomes. 
+
+**Note**: The goal of this code is not to be universally applicable in its current form to all datasets; rather, this code can merely serve as a starting point for future studies aiming to evaluate community-wide stability with $I_C$. The code below makes a number of simplifying assumptions (Box S2) which may not be appropriate in other contexts. 
+
+### {#callout-2}
+
+::: {.callout-note appearance="minimal" icon=false}
+
+### Assumptions embedded in the code
+
+- Microbial effects on plant performance arise primarily through modification of plant biomass (survival not impacted; note that this diverges from @Dudenhoffer_2022's original analysis)
+
+- In cases where an estimate of $B_{ix}$ was unable, I use the average value of $B_{ix}$ from all other pots in the same environmental (watering) treatment. 
+:::
+
+
+```{r message = F}
+
+library(tidyverse)
+library(readxl)
+library(osfr) # for downloading dataset
+
+# Download dataset if it is not available
+if(!("data_PSF_response_phase.xlsx" %in% list.files())) {
+  osf_retrieve_file("https://osf.io/nx2e6") %>%
+    osf_download()
+}
+
+psf_data <- read_xlsx("data_PSF_response_phase.xlsx")
+
+# Structure of the dataset
+colnames(psf_data)
+unique(psf_data$block) # There are sterile soils in this; we can filter them
+table(psf_data$dead)/2 
+
+# There are >200 dead plants; for now we can set aside
+# microbial effects on mortality and focus instead on growth
+# This differs from the authors of this study, but is consistent
+# with lots of other work on PSF. 
+# For now, we can just assign dead plants to have the mean biomass
+# across other replicates of the same species/soil/treatment combo.
+
+# Data reformatting
+interaction_matrices <- 
+  psf_data %>% 
+   # Change the species names to be in sentence case i.e. "AT" becomes "At"
+  mutate(soil = str_to_sentence(soil),
+         species = str_to_sentence(species)) %>% 
+  # filter out sterile soils treatment - not relevant for I_C
+  filter(!str_detect(block, "S")) %>%
+  # group by the relevant categories
+  group_by(block, soil, treatment, species) %>%  
+  # Right now, biomass is separated agb/bgb;
+  # This chunk combines the two into whole-plant biomass ("combined_bm")
+  summarize(combined_bm = sum(bm), 
+            dead = max(dead)) %>%  
+  ungroup() %>% 
+  # Next, we replace NAs (biomass of dead plant) with mean values of that group
+  # NOTE that this is not a unviersally good choice; but needed to do something
+  # like this here because if any one entry of the matrix A is missing,
+  # that matrix cannot be used for calculating I_C. 
+  group_by(soil, treatment, species) %>% 
+  mutate(combined_bm = ifelse(dead ==1, NA, combined_bm), 
+         combined_bm = ifelse(dead == 1, 
+                              mean(combined_bm, na.rm = T),
+                              combined_bm)) %>% 
+  # filter out dead individuals 
+  select(-dead) %>%
+  # calculate log biomass
+  mutate(combined_bm = log(combined_bm)) %>% 
+  # make treatment into a factor vector, with levels L/M/H
+  mutate(treatment = as_factor(treatment), 
+         treatment = fct_relevel(treatment, c("L", "M", "H"))) %>% 
+  ungroup() %>% 
+  # Now, we can work within each treatment & block to make interaction matrices.
+  group_by(treatment, block) %>% 
+  arrange(treatment) %>%         
+  nest() %>% 
+  # The next chunk uses the biomass values B_{ij} and makes an
+  # interaction matrix (A) for each replicate block/treatment combo
+  mutate(interaction_matrix =
+           map(data, 
+               ~pivot_wider(.x, 
+                            # row is a species and each column is a soil type:
+                            names_from = soil, 
+                            values_from = combined_bm) %>%
+                 column_to_rownames('species') %>% 
+                 as.matrix()))
+
+# We can look at this new object:
+interaction_matrices
+
+# We can look at what an interaction matrix looks like:
+
+# This is the interaction matrix for Block A, low water treatment:
+interaction_matrices %>% 
+  filter(block == "A", treatment == "L") %>%
+  pull(interaction_matrix) %>% pluck(1) %>% round(., 2)
+# Conceptually it is similar to Fig. 2A from the paper, but note that this matrix
+# is for Block A only; that one averages from across blocks (and also accounts
+# for microbial effects on mortality).
+```
+
+Now that we have made the interaction matrices (1 matrix per block, per treatment), we can use this matrix to calculate the $I_C$ for every possible 2, 3, 4, 5, 6, 7, and 8 species combination. That will represent the $I_C$ for a given community, in a given treatment, in a given block. We can then summarize over different blocks to get a mean $I_C$ for each community in each treatment. 
+
+```{r message = F}
+# To make calculations easier, we can write a function that calculates
+# I_C for all possible subcommunities, gien a complete interaction matrix:
+
+Ic_for_all_subs <- function(intmat) {
+  
+  # 1. Helper function: Given a species combination, make a submatrix 
+  make_submatrix <- function(intmat, indices) {
+    to_return <- apply(indices, 2, function(x) intmat[x,x], simplify = F)
+    names(to_return) <- apply(indices, 2, function(x) 
+      paste(rownames(intmat)[x], collapse=""))
+    to_return
+  }
+  
+  # 2. Helper function: Given an interaction matrix, calculate I_C
+  Ic <- function(intmat) {
+    # 2.1. make a variable that holds species number
+    nsp = ncol(intmat)
+    
+    # 2.2. Define a sub-helper function for making matrices A_j
+    # This function replaces the j'th column
+    # in the interaction matrix (intmat) with a column of 1s
+    make_Aj_mat <- function(intmat, j) {
+      temp_mat <- intmat # Define a temporary holder matrix
+      temp_mat[,j] <- 1  # Return the j'th column with 1
+      return(temp_mat)   # return the holder matrix
+    }
+    
+    # 2.3. Make Aj vectors using the sub-helper function above
+    Ajs <- map(1:nsp, ~make_Aj_mat(intmat, .x))
+    # 2.4. Calculate determinants of all Aj matrices
+    dets <- map_dbl(Ajs, det)
+    # 2.5. Calculate IC
+    ((-1)^nsp)*(sum(dets))
+  }
+
+  
+  # 3. Helper function: Given a list of submatrices, calculate their IC
+  # This function returns a vector; each element in the vector is I_C 
+  make_Ic_vec <- function(submats) {
+    map_dbl(submats, Ic)
+  }
+  
+  # 4. Define the number of species (total), all possible 2:n species combinations, 
+  # and make all possible sub-matrices of 2:n species using Helper Fn 1 above.
+  nsp <- nrow(intmat)
+  possible_combns <- map(2:nsp, ~combn(nsp, .x))
+  submats <- map(possible_combns, ~make_submatrix(intmat, .x))
+  
+  # 5. calculate Ic for all submatrices
+  all_Ics <- map(submats, make_Ic_vec)
+  all_Ics
+}
+
+
+
+# We can now use this function to calculate all ICs:
+# Here, we use the interaction_matrices object and make a new column
+# called all_Ics; each element in this column will have all
+# possible I_C values for a given matrix.
+interaction_matrices_with_ICs <-
+  interaction_matrices %>% 
+  mutate(all_Ics = map(interaction_matrix, Ic_for_all_subs)) 
+
+head(interaction_matrices_with_ICs)
+# The first entry has all I_Cs for Block A/treatment L:
+# (This will be a list; the first element in the list is a vector
+# of the two-species I_Cs; the second element is a vector of the 3-species
+# I_Cs, and so on)
+
+# Two species I_C (AKA I_S), only printing first 10
+interaction_matrices_with_ICs$all_Ics[[1]][[1]][1:10]
+
+# I_S for triplets,  only printing first 10
+interaction_matrices_with_ICs$all_Ics[[1]][[2]][1:10]
+```
+
+We now have a value of $I_C$ for every $n = 2,3..,8$ species combination in each block/treatment combination. There are various ways one can summarize this information; for simplicity, I will just summarize the mean value of pairwise $I_C$, triplet $I_C$, ... 8-species $I_C$ in each treatment. 
+
+
+```{r fig.height = 5}
+interaction_matrices_with_ICs %>% 
+  # This next mutate call takes the big list of Ics and splits the 
+  # information into columns for 2, 3,..8 species communities
+  mutate(coms2 = map(all_Ics, ~pluck(.x,1)),
+         coms3 = map(all_Ics, ~pluck(.x,2)),
+         coms4 = map(all_Ics, ~pluck(.x,3)),
+         coms5 = map(all_Ics, ~pluck(.x,4)),
+         coms6 = map(all_Ics, ~pluck(.x,5)),
+         coms7 = map(all_Ics, ~pluck(.x,6)),
+         coms8 = map(all_Ics, ~pluck(.x,7))) %>% 
+  # data managing: we can get rid of a few things and only focus on the IC columns
+  select(-data,  -interaction_matrix, -all_Ics) %>%
+  unnest(c(treatment, block)) %>% 
+  # At this step, we get the mean value of $I_C$ for each n-species community
+  mutate(across(coms2:coms8, ~map_dbl(.x, mean))) %>% 
+  # Clean out some columns that we don't need
+  select(block, treatment, coms2:coms8) %>% 
+  # Calculate mean and SD of IC for each community size in each treatment
+  group_by(treatment) %>% 
+  # Get the mean, standard deviation, and replicates per calculation
+  summarise(across(coms2:coms8, mean, .names = "{.col}_mean"),
+            across(coms2:coms8, sd, .names = "{.col}_sd"),
+            across(coms2:coms8, length, .names = "{.col}_nreps")) %>% 
+  # Clean out some unsed columns
+  select(-(coms2_nreps:coms7_nreps), nreps = coms8_nreps) %>% 
+  # Reshape the data in two steps: 
+  # First, pivot it longer so that each sd/mean ends up on its own row
+  pivot_longer(coms2_mean:coms8_sd) %>% 
+  # Then, clean up the names and pivot it wider so that mean/sd are in different columns
+  separate(name, into = c("which_comm", "which_value"), sep = "_") %>% 
+  pivot_wider(names_from = which_value, values_from = value) %>% 
+  # calculate SEM as sd/sqrt(n)
+  mutate(sem = sd/sqrt(nreps)) %>% 
+  
+  # NOTE: uncomment the following lines to make the Main Text Fig. S3; 
+  # which focuses only on two- and three-species communities
+  # filter(which_comm %in% c("coms2", "coms3")) %>%
+  # mutate(which_comm = ifelse(which_comm == "coms2", "Species pairs", "Triplets")) %>%
+  
+  mutate(which_comm = case_when(which_comm == "coms2" ~ "2 species communities",
+                                which_comm == "coms3" ~ "3 species communities",
+                                which_comm == "coms4" ~ "4 species communities",
+                                which_comm == "coms5" ~ "5 species communities",
+                                which_comm == "coms6" ~ "6 species communities",
+                                which_comm == "coms7" ~ "7 species communities",
+                                which_comm == "coms8" ~ "8 species communities")) %>%
+  
+  ggplot(aes(x = treatment, y = mean, ymin = mean-sem*2, ymax = mean+sem*2)) +
+  geom_point(size = 3) + 
+  geom_errorbar(width = 0) + 
+  facet_wrap(.~which_comm, scales = "free") + 
+  ylab(latex2exp::TeX("Mean $I_C$")) + 
+  geom_hline(yintercept = 0, linewidth = 0.4, linetype = "dashed", color = "grey") + 
+  theme_classic()
+
+# ggsave(filename = "figures/figS4.pdf", width = 5, height = 2)
+
+```
+
+\clearpage
+
+## References
+
+\vspace{1em}

@@ -1,0 +1,398 @@
+---
+title: ""
+format: 
+  pdf:
+    theme: ../custom.scss
+    include-in-header: 
+      text: '\usepackage{lineno,cancel,setspace, indentfirst, environ, amsmath,xcolor}  \usepackage[skip=12pt plus1pt, indent=0pt]{parskip}'
+bibliography: ../bibliography.bib
+csl: ../ajb.csl
+pdf-engine: xelatex
+geometry:
+  - bottom=2.5cm
+  - top=2.5cm
+---
+<!--mainfont: TeX Gyre Pagella-->
+
+\def\theequation{S1.\arabic{equation}}
+
+# Appendix S1: Conditions for coexistence in the classic plant-soil feedback model
+
+**Contact**: Gaurav S. Kandlikar, [gkandlikar@lsu.edu](mailto:gkandlikar@lsu.edu)
+
+
+This appendix begins with a  overview of dynamics model from @Bever_1997, including detailed steps to convert the underlying exponential growth equations for plants and microbes into equations for tracking changes in plant and microbe frequencies. After describing the model, I then outline two approaches for identifying the conditions that allow long-term persistence of both plant species in this model. Note that throughout this appendix, I use $N$ to denote state variables in that reflection abundances, and $F$ to denote frequency. The subscripts 1 and 2 refer to the plant species, and the subscripts $A$ and $B$ refer to their associated soil communities.  
+
+## Model description
+
+The @Bever_1997 framework begins by considering a system comprising two plant species whose populations grows exponentially at a rate determined by the composition of the soil microbial community:
+
+$$\frac{dN_1}{dt} = W_1N_1~~~\text{and}~~~\frac{dN_2}{dt} = W_2N_2$${#eq-plant}
+
+$W_i$, the per-capita population growth rate of species $i$, is determined by the relative frequency of microbial community ($F_A$ and $F_B$), and the effect of each microbial community on plant $i$:
+
+$$W_i = m_{iA}F_A + m_{iB}F_B  $${#eq-microbeFx}
+
+Note that $F_A$ and $F_B$ represent the relative frequency of each microbial community, rather than their absolute abundance. Thus,  $F_A + F_B = 1$, and Eqn. \ref{eq-microbeFx} can also be written as $W_i = m_{iA}F_A + m_{iB}(1-F_A)$. Substituting this into the plant dynamics equation (\ref{eq-plant}) gives the full equations for plant population dynamics:
+
+$$\frac{dN_1}{dt} = N_1(m_{1A}F_A + m_{1B}(1-F_A)) ~~ \text{and} ~~
+\frac{dN_2}{dt} = N_2(m_{2A}F_A + m_{2B}(1-F_A))$${#eq-plant2}
+
+\clearpage
+
+The abundance of soil microbial communities $N_A$ and $N_B$ also experiences exponential growth, with the rate of growth determined by the relative frequency of each plant^[Note that on p. 563 of @Bever_1997, the authors write that $dN_A/dt = N_AN_1$, implying that the growth rate of microbial community $A$ depends on the *abundance* rather than *frequency* of plant 1. I believe this to be a typo.]: 
+
+$$\frac{dN_A}{dt} = N_A \frac{N_1}{N_1+N_2} ~~~\text{and}~~~ \frac{dN_B}{dt} = vN_B \frac{N_2}{N_1+N_2}$${#eq-microbeAbund}
+
+The parameter $v$ defines how strongly soil microbial community B accumulates with plant 2, relative to how strongly soil community A accumulates with plant 1. 
+
+Recognizing that plant population growth rates depend on the composition of the microbial community, which in turn depend on the relative frequency of each plant, we can express the system in terms of plant frequencies. This lets us simplify from the two equations in \ref{eq-plant2}, to one equation for the frequency of plant 1 ($F_1 = \frac{N_1}{N_1+N_2}$):
+
+$$\frac{dF_1}{dt} = F_1(1-F_1)[(m_{1A} - m_{2A})F_A + (m_{1B} - m_{2B})(1-F_A)]$${#eq-plant3}
+
+By definition, $F_2 = 1-F_1$, and $\frac{dF_2}{dt} = -\frac{dF_1}{dt}$.
+
+Similarly, from the equations for tracking change in soil community abundance (Eqns. [@eq-microbeAbund]), we can derive equations for the change in the frequency of microbial community ($F_A = \frac{N_A}{N_A+N_B}$):
+
+$$\frac{dF_A}{dt} = F_A(1-F_A)(F_1 - v(1-F_1))$$ {#eq-microbedyns}
+
+By definition, $F_B = 1-F_A$, and $\frac{dF_B}{dt} = -\frac{dF_A}{dt}$.
+
+
+Deriving [Eqn. @eq-plant3] from [Eqn. @eq-plant2], and for deriving [Eqn. @eq-microbedyns] from [Eqn. @eq-microbeAbund] requires application of the quotient rule. To make this derivation more accessible, I provide detailed steps in [Box S1](#callout-1). After Box S1, I outline two complementary ways to evaluate the conditions for coexistence in this model (via [evaluating feasibility and stability of equilibria](#equilibria), or via [evaluating the invasion growth rates](#igr)).
+
+### {#callout-1}
+
+::: {.callout-note appearance="minimal" icon=false}
+
+### Box S1: Deriving the equation for plant frequency dynamics from  exponential growth equations 
+
+This box details the steps for expressing plant and soil microbial frequency dynamics  ([Eqns @eq-plant3] and [-@eq-microbedyns]) from the exponential growth models ([Eqns @eq-plant2] and [-@eq-microbeAbund]).
+
+#### Plant frequency dynamics
+
+To derive the plant frequency dynamics equation, we first define $F_1$ as the relative abundance of plant 1: $F_1 = \frac{N_1}{N_1+N_2}$. Our goal now is to derive the equation for change in $F_1$ over time: $\frac{dF_1}{dt}$. 
+    
+We proceed by applying the quotient rule (for $h(x) = \frac{f(x)}{g(x)},~~ h'(x) = \frac{f'(x)g(x)-g'(x)f(x)}{g(x)^2}$) to get
+    
+$$\frac{dF_1}{dt} = \frac{d\frac{N_1}{N_1+N_2}}{dt} = \frac{\frac{dN_1}{dt}(N_1+N_2) - N_1(\frac{dN_1}{dt} + \frac{dN_2}{dt})}{(N_1+N_2)^2}$$
+
+Recalling that $\frac{dN_1}{dt} = N_1(m_{1A}F_A + m_{1B}F_B)$ and $\frac{dN_2}{dt} = N_2(m_{2A}F_A+m_{2B}F_B)$, we can rewrite the equation as follows:
+
+$$\frac{dF_1}{dt} = 
+\frac{N_1(m_{1A}F_A + m_{1B}F_B)}{N_1+N_2} -
+\frac{N_1\big(N_1(m_{1A}F_A + m_{1B}F_B) + N_2(m_{2A}F_A+m_{2B}F_B)\big)}{(N_1+N_2)^2}$$
+
+
+Recalling that by definition, $F_1 = \frac{N_1}{N_1+N_2}$ and $F_2 = \frac{N_2}{N_1+N_2}$, this equation simplifies as follows:
+
+$$\frac{dF_1}{dt} = F_1\big[(m_{1A}F_A + m_{1B}F_B) - F_1(m_{1A}F_A + m_{1B}F_B) - F_2 (m_{2A}F_A+m_{2B}F_B)\big]$$
+
+Combining the first two terms in the square brackets gives:
+
+$$\frac{dF_1}{dt} = F_1\big[(1-F_1)(m_{1A}F_A + m_{1B}F_B)  - F_2 (m_{2A}F_A+m_{2B}F_B)\big]$$
+Now, recognizing that $(1-F_1) = F_2$, we can simplify this to:
+
+$$\frac{dF_1}{dt} = F_1\big[F_2[(m_{1A}F_A + m_{1B}F_B)  - (m_{2A}F_A+m_{2B}F_B)]\big]$$
+Moving $F_2$ outside the brackets, recognizing that $F_2 = 1-F_1$, and recognizing that $F_B = (1-F_A)$ gives the frequency dynamics equation as stated in @Bever_1997 (see also [Eqn. @eq-plant3] above):
+
+$$\boxed{\frac{dF_1}{dt} = F_1(1-F_1)\big[(m_{1A}-m_{2A})F_A + (m_{1B}-m_{2B})(1-F_A)\big]}$$
+
+*continued on next page*
+:::
+
+\clearpage
+
+::: {.callout-note appearance="minimal" icon=false}
+
+#### Soil frequency dynamics
+
+Next, we derive the microbial frequency dynamics ([Eqn @eq-microbedyns]) from the equations for change in microbial abundance ([Eqn @eq-microbeAbund]). As above, we first define $F_A$ as the relative abundance of soil community $A$: $F_1 = \frac{N_A}{N_A+N_B}$. Our goal now is to derive the equation for change in $F_A$ over time: $\frac{dF_A}{dt}$. 
+
+As above, applying the quotient rule yields:
+
+$$\frac{dF_A}{dt} = \frac{d\frac{N_A}{N_A+N_B}}{dt} = \frac{\frac{dN_A}{dt}(N_A+N_B) - N_A(\frac{dN_A}{dt}+\frac{dN_B}{dt})}{(N_A+N_B)^2}$$
+
+Recalling from above that $\frac{dN_A}{dt} = N_AF_1$ and canceling terms gives:
+
+$$\frac{dF_A}{dt} = \frac{N_AF_1}{N_A+N_B} - \frac{N_A(N_AF_1+ vN_BF_2)}{(N_A+N_B)^2}$$
+Recognizing that $F_A = \frac{N_A}{N_A+N_B}$, and expanding out the second term, we can rewrite the equation as follows:
+
+$$\frac{dF_A}{dt} = F_AF_1 - \frac{F_A(N_AF_1)}{N_A+N_B} - \frac{F_A(vN_BF_2)}{N_A+N_B}$$
+Once again recognizing that $F_A = \frac{N_A}{N_A+N_B}$, we can further simplify the equation: 
+
+$$\frac{dF_A}{dt} = F_AF_1 - F_A^2(F_1) - vF_AF_B(F_2)$$
+
+Factoring out $F_A$ gives
+
+$$\frac{dF_A}{dt} = F_A(F_1 - F_AF_1 - vF_BF_2)$$
+We can further factor out $F_1$ in the parenthetical term to rewrite the equation:
+
+$$\frac{dF_A}{dt} = F_A(F_1(1 - F_A) - vF_BF_2)$$
+Recognizing that $1-F_A = F_B$, we can write:
+
+$$\frac{dF_A}{dt} = F_A(F_1F_B - vF_BF_2) = \boxed{F_A(1-F_1)[F_1-v(1-F_1)]}$$
+This is the same as [Eqn. @eq-microbedyns]
+:::
+
+
+\clearpage
+
+## Evaluating coexistence by analysing the feasibility and stability of equilibrium points {#equilibria}
+
+The first approach to deriving the conditions necessary for coexistence of the two plant species involves identifying the criteria that ensure feasible and stable equilibrium points. Feasible equilibrium points mean that all the components of the system (in this case, the two plant species and their associated microbial communities) are present in the system at equilibrium; stability means that slight perturbations of the equilibrium do not push the system towards exclusion of one plant or the other. This approach builds on the insight that for two-species Lotka-Volterra models, feasible equilibria that are locally stable guarantee coexistence [@Goh_1976].
+
+### Identifying the equilibrium conditions
+
+The first step in this analysis is to find the equilibria of the model. To do so, we set [Eqns. @eq-plant3] and [-@eq-microbedyns] to both equal zero. We can start by evaluating the plant dynamics equation:
+
+$$\frac{dF_1}{dt} = F_1(1-F_1)[(m_{1A}-m_{2A})F_A + (m_{1B}-m_{2B})(1-F_A)] = 0$$
+
+This equilibrium can arise when $F_1 = 0$ or when $F_1 = 1$, which corresponds to cases in which the plant community is a monoculture of species $2$ or $1$ respectively. However, equilibrium can also arise when the third term (in square brackets) is equal to zero:
+
+$$[(m_{1A}-m_{2A})F_A + (m_{1B}-m_{2B})(1-F_A)] = 0$${#eq-plantequilib}
+
+Solving this for $F_A$ shows that equilibrium is achieved when the following is true:
+
+$$F_A^* = \frac{m_{2B}-m_{1B}}{m_{1A} - m_{2A} - m_{1B} + m_{2B}} = \frac{m_{2B}-m_{1B}}{I_S}$${#eq-plantequilib2}
+
+Given that $dF_2/dt = -dF_1/dt$, @eq-plantequilib2 also implies that $dF_2/dt =0$. 
+
+For the system to be at equilibrium, the microbial communities also need to be static:
+
+$$\frac{dF_A}{dt} = F_A(1-F_A)[(F_1-v(1-F_1)] = 0$${#eq-microbeequilib}
+
+As above, the system is at equilibrium when it comprises entirely of microbial community $A$ or $B$, corresponding to $F_A = 1$ or $F_A = 0$, respectively. The system is also at equilibrium when the third term  (in square brackets) is equal to zero:
+
+$$F_1 - v(1-F_1) = 0$$
+
+Solving this for $F_1$ shows that equilibrium requires the following to be true:
+
+$$F_1^* = \frac{v}{1+v}$${#eq-microbeequilib2} 
+
+### Identifying feasible equilibrium points {#feasibility}
+
+Having identified the equilibrium conditions ([Eqns. @eq-plantequilib2] and [-@eq-microbeequilib2]) can now evaluate the conditions under which this equilibrium is *feasible*, i.e. what is required for the equilibrium frequency of both plants and microbes to be between 0 and 1 ($0<F_A^*<1$ and $0 < F_1^* < 1$). 
+
+For simplicity, we begin with $F_1^*$. The value of [Eqn. @eq-microbeequilib2] will be between 0 and 1 for any $v > 0$. In other words, so long as both plant species condition the soil community, this condition is satisfied. 
+
+Next we move to [Eqns. @eq-plantequilib2]. Two sets of conditions can allow for $0 < F_A^* < 1$:
+
+\vspace{-3em}
+
+### {#callout-conditions}
+
+> ***Condition 1***: Both the numerator and denominator of [Eqn. @eq-plantequilib2] are positive ($m_{2B}-m_{1B}>0$ and $m_{1A} - m_{2A} - m_{1B} + m_{2B}>0$), *and* the magnitude of the numerator is smaller than that of the denominator ($m_{2B}-m_{1B} < m_{1A} - m_{2A} - m_{1B} + m_{2B}$).^[Note that due to algebra, if $m_{2B}>m_{1B}$ and $I_S>0$, $m_{1A}>m_{2A}$ is implied; likewise, if $m_{2B}<m_{1B}$ and $I_S<0$ (Condition 2) is satisfied, $m_{1A}<m_{2A}$ is implied.]
+
+> ***Condition 2***: Both the numerator and denominator of [Eqn. @eq-plantequilib2] are negative ($m_{2B}-m_{1B}<0$ and $m_{1A} - m_{2A} - m_{1B} + m_{2B}<0$), *and* the magnitude of the numerator is smaller than that of the denominator  ($\text{abs}(m_{2B}-m_{1B}) < \text{abs}(m_{1A} - m_{2A} - m_{1B} + m_{2B})$)
+
+
+If either condition is met (along with the condition that $v>0$), the system has a feasible equilibrium point at which all players (both plants and both microbes) are present in the system at a frequency of between 0 and 1. If neither of these conditions is met (e.g. if $I_S<0$ but $m_{2B}-m_{1B}>0$), the system does not have an internal equilibrium; in other words, the system only has a boundary equilibrium corresponding to only one species being present in the system.
+
+The next step for understanding the coexistence conditions in this model is to evaluate the dynamic stability of these equilibrium points.
+
+### Evaluating the dynamic stability of equilibrium points {#stability}
+
+While the above expressions (conditions 1 and 2, along with $v>0$) capture the conditions necessary for the existence of feasible equilibrium points, long-term coexistence also requires that these points are dynamically stable (i.e. that the system recovers equilibrium from slight perturbations away from the equilibrium state, @Goh_1976). 
+
+We can evaluate the local stability of the equilibria by creating the Jacobian Matrix  of the system, which is denoted $\mathbf{J}$. The Jacobian matrix helps us evaluate whether a system that is at equilibrium returns to the equilibrium when it is perturbed slightly, or if the perturbation causes the continues shifting away from the equilibrium. Each element in $\mathbf{J}$ is the partial derivative of one of the dynamics equations ([Eqns @eq-plant3] and [-@eq-microbedyns]) with respect to one of  the components:
+
+$$\mathbf{J} =  
+  \begin{bmatrix}
+    \frac{\partial{\dot{F_1}}}{\partial{F_1}} & \frac{\partial{\dot{F_1}}}{\partial{F_A}} \\
+    \frac{\partial{\dot{F_A}}}{\partial{F_1}} & \frac{\partial{\dot{F_A}}}{\partial{F_A}} \\
+  \end{bmatrix}$$
+
+Note that above, $\dot{F_1} = \frac{dF_1}{dt}$, and $\dot{F_A} = \frac{dF_A}{dt}$. Taking the respective partial derivatives gives us the following expressions for the four elements of the matrix:
+
+
+$$\frac{\partial{\dot{F_1}}}{\partial{F_1}} = (1-2F_1)[(m_{1A}-m_{2A})F_A + (m_{1B}-m_{2B})(1-F_A)]$$
+\vspace{-1em}
+$$\frac{\partial{\dot{F_1}}}{\partial{F_A}} = F_1 (1-F_1)(m_{1A}-m_{2A}-m_{1B}+m_{2B}) =  F_1(1-F_1)I_S$$
+\vspace{-1em}
+$$\frac{\partial{\dot{F_A}}}{\partial{F_1}} = F_A(1-F_A)(1+v)$$
+\vspace{-1em}
+$$\frac{\partial{\dot{F_A}}}{\partial{F_A}} = [F_1-v(1-F_1)](1-2F_A)$$
+
+These four terms define the entries of the Jacobian matrix, which we can now evaluate at the system's equilibrium points to determine their local stability. 
+
+Recall from our analysis of [Eqn. @eq-plantequilib] that at equilibrium, $[(m_{1A}-m_{2A})F_A + (m_{1B}-m_{2B})(1-F_A)] = 0$; thus, $\frac{\partial{\dot{F_1}}}{\partial{F_1}}$ also equals $0$ at equilibrium. 
+
+Similarly, recall from the analysis of [Eqn. @eq-microbeequilib] that $[F_1-v(1-F_1)] = 0$ at equilibrium; thus,  $\frac{\partial{\dot{F_A}}}{\partial{F_A}}$ also equals zero at equilibrium. 
+
+The system's Jacobian evaluated at its equilibrium $(F_1^*,F_A^*)$ thus simplifies as follows:
+\vspace{-1em}
+
+$$\mathbf{J}|_{F_1^*,F_A^*} =  
+  \begin{bmatrix}
+    0 & F_1(1-F_1)I_S \\
+   F_A(1-F_A)(1+v) & 0 \\
+  \end{bmatrix}
+$$
+
+We can evaluate the local stability of the equilibrium points on the basis of the trace and determinant of the matrix $\mathbf{J}$ [@Panvilov_2021]. The trace (tr) for a square matrix is the sum of its diagonal entries, so $\text{tr}(\mathbf{J}|_{F_1^*,F_A^*}) = 0$. 
+
+\clearpage
+
+Given that the trace of the matrix is zero, the equilibrium can have one of two properties:
+
+> 1. The equilibrium is a "center equilibrium" if the determinant is positive [@Panvilov_2021]. A center equilibrium implies that the system is neutrally stable, meaning that the system never returns to the equilibrium point itself after perturbation; it remains in a perpetual cycle. For our purposes, we interpret this as a coexistence equilibrium, because it implies that both species have cyclical dynamics of their frequency in the system. 
+
+> 2. The equilibrium is a saddle node if the determinant is negative [@Panvilov_2021]. This means that once perturbed from equilibrium, the system continues moving away from the equilibrium (peturbations in favor of species 1 eventually lead to monodominance by species 1, and vice-versa for perturbations in favor of species 2). 
+
+Thus, whether or not any feasible equilibrium point corresponds to stable coexistence is determined by the sign of the determinant.
+
+
+Recalling that the determinant of a generic two-by-two matrix $\bigg(\begin{matrix} a&b\\c&d\end{matrix}\bigg)$ is equal to $(ad)-(bc)$, the determinant of $J$ is as follows:
+
+\vspace{-1em}
+
+$$\mathrm{det}(\mathbf{J}|_{F_1^*,F_A^*}) = 0 - [\overbrace{(F_A(1-F_A)(1+v))}^{\text{term 1}} * \overbrace{(F_1(1-F_1)I_S)}^{\text{term 2}}]$$
+
+Given that we are evaluating feasible equilibrium points where $0 < F_A,F_B < 1$, and $v>0$, term 1 is always positive. Additionally, given that by definition at the feasible equilibrium $0 < F_1, F_2 < 1$, the sign of term 2 - and thus, the sign of the determinant as a whole - is determined by the sign of $I_S$. Specifically, negative values of $I_S$ correspond to a positive determinant, while positive values of $I_S$ correspond to a negative determinant. 
+
+Building on the two potential properties listed above, this means that the equilibrium is neutrally stable if $I_S <0$, or is a saddle node if $I_S>0$. 
+
+### Combining the criteria for feasibility and stability
+
+From the above analysis, we see that only equilibrium points that satisfy [Condition 2 for feasible equilibria](#callout-conditions) correspond to a an equilibrium in which both species can coexist with neutral stability:
+
+> $m_{2B}-m_{1B}<0$ and $m_{1A} - m_{2A} - m_{1B} + m_{2B}<0$.
+
+Note that the above inequality implies that $m_{1A} < m_{2A}$. Thus, we can express the coexistence conditions simply as:
+
+$$m_{2B}<m_{1B}~~~\text{and}~~~m_{1A} < m_{2A}$${#eq-coex-feasibility}
+
+\clearpage
+
+## Evaluating coexistence by analysing the requirements for mutual invasion  {#igr}
+
+While the above approach derives the coexistence criteria by evaluating the conditions for local stability around feasible equilibria, one can also approach coexistence criteria by evaluating the conditions that allow mutual invasibility [@Turelli_1978; @Chesson_1989; @Grainger_2019]. As explained in the main text of the manuscript, this approach builds on the insight that coexistence requires that each species can gain a foothold (i.e. achieve a positive low-desnity growth rate, or LGDR) as it grows into an equilibrium monoculture of the other. Following @Chesson_2000 and @Chesson_2018, one can further decompose the LGDRs into two terms - one that captures the microbially mediated stabilization (which promotes both species' invasion growth rates, and thus favors coexistence), and a second term that captures the microbially mediated fitness difference (which benefits one plant's invasion growth rate but suppresses the other, and thus favors exclusion). The details of this analysis are provided in the appendix of @Kandlikar_2019, and summarized below. 
+
+We begin the analysis with [Eqn. @eq-plant3], which defines the dynamics of each plant's frequency in the system:
+
+$$\frac{dF_1}{dt} = F_1(1-F_1)[(m_{1A} - m_{2A})F_A + (m_{1B} - m_{2B})(1-F_A)]$$
+
+We first evaluate the case where the system is an equilibrium monoculture of plant 2 (and its corresponding soil community). Plant 1 and its soil community are absent, meaning that $F_1 = F_A = 0$. We can now quantify plant 1's per-frequency growth rate ($\frac{1}{F_1}\frac{dF_1}{dt}$) as follows:
+
+$$\text{LGDR}_{1\to2} = \frac{1}{F_1}\frac{dF_1}{dt} = (1-F_1)[(m_{1A} - m_{2A})F_A + (m_{1B} - m_{2B})(1-F_A)]$${#eq-invasiongrowth}
+
+Given that $F_1 = F_A = 0$, [Eqn. @eq-invasiongrowth] simplifies as follows:
+
+\vspace{-2em}
+
+$$\text{LGDR}_{1\to2} = m_{1B} - m_{2B}$${#eq-igr1}
+
+Through a similar analysis of plant 2's growth into a monoculture of plant 1, we get the invasion growth rate of plant 2:
+
+\vspace{-2em}
+
+$$\text{LGDR}_{2\to1} = m_{2A} - m_{1A}$${#eq-igr2}
+
+If both of these conditions are satisfied, both species have positive low-density growth rates and can coexist provided that the following is true. Thus, this analysis yields the coexistence criteria:
+
+\vspace{-2em}
+
+$$m_{1B} > m_{2B} ~~~\text{and}~~~ m_{2A} > m_{1A}$${#eq-coex-igr}
+
+The inequalities in [Eqn. @eq-coex-igr] are identical to those that we derived through the feasibility analysis above [Eqn. @eq-coex-feasibility], showing the inherent complementarity of these two approaches. If our goal were to simply evaluate coexistence in the @Bever_1997 model,  evaluating is a perfectly valid ending.
+
+However, we can extend our analysis further to generate additional insights. Specifically, decomposing the LDGRs into microbially mediated stabilization and fitness differences allows us to integrate plant-microbe interactions into a wider body of work that seeks to understand how plant coexistence is structured by competition, pollinators, herbivores, etc. (see main text for citations to specific examples). 
+
+As explained in Appendix S1 of @Kandlikar_2019, the first step in this decomposition is to define the species-level average fitness [@Chesson_2018]. In the case of the @Bever_1997 model, we can define the average fitness of species 1 as its average growth rate at all possible soil states (from $F_A = 0$ to $F_A = 1$):
+
+$$\text{fitness}_1 = \frac{\int_0^1m_{1B}+(m_{1A}-m_{1B})F_AdF_A}{\int_{0}^{1}dF_A} = m_{1B}F_A+\frac{m_{1A}-m_{1B}}{2}F_A^2\Bigg|_0^1 = \frac{m_{1A} + m_{1B}}{2}$$
+
+Similarly, $\text{fitness}_2 = \frac{m_{2A} + m_{2B}}{2}$.  With these definitions of species 1 and 2's average fitness, we can express each species' invasion growth rate as the sum of the fitness difference  and stabilization:
+
+$$\text{LDGR}_1 = \text{fitness difference}_{1,2} + \text{stabilization}$${#eq-lgdr1}
+$$\text{LDGR}_2 = \text{fitness difference}_{2,1} + \text{stabilization}$${#eq-lgdr2}
+
+Note that $\text{fitness difference}_{1,2}$ is simply the difference between species 1 and 2's average fitness as defined above:
+
+$$\text{fitness difference}_{1,2} = \big(\overbrace{\frac{m_{1A} + m_{1B}}{2}}^{\text{plant 1 fitness}}\big)-\big(\overbrace{\frac{m_{2A} + m_{2B}}{2}}^{\text{plant 2 fitness}}\big)$$
+
+
+The order of the two terms is flipped for calculating $\text{fitness difference}_{2,1}$. Thus, in the absence of stabilization, only one species can have a positive invasion growth rate, and coexistence is not possible.  
+
+Above, we saw that $\text{LGDR}_{1\to2} = m_{1B}-m_{2B}$ ([Eqn @eq-igr1]). Combining this with [Eqn. @eq-lgdr1], we get:
+
+$$m_{1B}-m_{2B} = \big({\frac{m_{1A} + m_{1B}}{2}}\big)-\big(\frac{m_{2A} + m_{2B}}{2}\big) + \text{stabilization}$$
+
+Algebra (detailed in [Box S2](#callout-2)) yields the expression for stabilization:
+
+$$\text{stabilization} = -\frac{1}{2}(m_{1A} -m_{1B}-m_{2A}+m_{2B}) = -\frac{1}{2}I_S$$
+
+For both species to have a positive LDGR, the strength of stabilization should exceed the absolute value of the fitness difference^[the absolute value of (fitness difference)$_{1,2}$ equals that of (fitness difference)$_{2,1}$, so subscripts are not required]:
+
+$$\text{stabilization}>abs(\text{fitness difference})$$
+When fitness differences exceed stabilization, only the species with the higher fitness can invade into a monoculture of the other; this corresponds to species exclusion. 
+
+Negative stabilization (destabilization) suppresses each species' LDGR. If it does so to the point that neither species has a positive LDGR, the system experiences priority effects: whichever species is present at a higher frequency will dominate, and the species with initially low frequencies eventually gets excluded. 
+
+\vspace{-2em}
+### {#callout-2}
+
+::: {.callout-note appearance="minimal" icon=false}
+## Box S2: Deriving the stabilization term
+
+Above, we saw that the $\text{LGDR}_{1\to2}$can be expressed as follows:
+
+$$\text{LGDR}_{1\to2} = m_{1B}-m_{2B} = \big({\frac{m_{1A} + m_{1B}}{2}}\big)-\big(\frac{m_{2A} + m_{2B}}{2}\big) + \text{stabilization}$$
+
+We can rewrite this as follows:
+
+$$m_{1B}-m_{2B} = \frac{1}{2}m_{1A}+\frac{1}{2}m_{1B}-\frac{1}{2}m_{2A}-\frac{1}{2}m_{2B} + \text{stabilization}$$
+
+Moving the terms to the left of the equal sign to the right, and moving stabilization to the left gives
+
+$$-\text{stabilization} = \frac{1}{2}m_{1A}-\frac{1}{2}m_{1B}-\frac{1}{2}m_{2A}+\frac{1}{2}m_{2B}  $$
+
+This equation simplifies to the expression for stabilization:
+
+$$\boxed{\text{stabilization} = -\frac{1}{2}(m_{1A}-m_{1B}-m_{2A}+m_{2B})}$$
+\vspace{1.5em}
+
+**The decomposition also applies to $\text{LGDR}_{2\to1}$**
+
+While we derived stabilization from plant 1's LDGR, we can show that this applies equally well to plant 2's low density growth:
+
+$$\text{LDGR}_{2\to1} = \text{fitness difference}_{2,1} + \text{stabilization}$$
+Substituting the expressions for $\text{fitness difference}_{2,1}$ and $\text{stabilization}$ gives us:
+
+$$\text{LDGR}_{2\to1} = \frac{m_{2A}+m_{2B}}{2} - \frac{m_{1A}+m_{1B}}{2} -\frac{1}{2}(m_{1A}-m_{1B}-m_{2A}+m_{2B})$$
+
+Through algebra, we recover [Eqn. @eq-lgdr2] as above:
+
+$$\text{LDGR}_{2\to1} = m_{2A}-m_{1A}$$
+
+**The coexistence criteria in terms of stabilization/fitness difference is equivalent to that from the LDGR analysis**
+
+Finally, we can show that the coexistence criteria expressed as "stabilization > abs(fitness difference)" is equivalent to the criteria in [Eqn. @eq-coex-igr].
+
+Recall the coexistence criteria in terms of stabilization and fitness difference:
+
+$$\overbrace{-\frac{1}{2}\big((m_{1A}+m_{2B})-(m_{2A}+m_{1B})\big)}^{\text{stablization}} > \text{abs}\bigg(\overbrace{\frac{1}{2}(m_{1A}+m_{1B}) - \frac{1}{2}(m_{2A}+m_{2B})}^{\text{fitness difference}_{1,2}}\bigg)$$ {#eq-stabFd-Ineq2}
+
+
+By dividing though by $-\frac{1}{2}$, this can be rexpressed as follows:
+
+$$m_{1A}+m_{2B} - m_{2A} - m_{1B} < \text{abs}(m_{1A}+m_{1B} - m_{2A}-m_{2B})$$
+To accounting for the absolute value function on the right, this inequality can be written as two separate inequalities:
+
+$$m_{1A}+m_{2B} - m_{2A} - m_{1B} < m_{1A}+m_{1B} - m_{2A}-m_{2B}$${#eq-comparison1}
+
+
+$$m_{1A}+m_{2B} - m_{2A} - m_{1B} > -m_{1A}-m_{1B} + m_{2A}+m_{2B}$${#eq-comparison2}
+
+Cancelling like terms in [Eqn. -@eq-comparison1] gives $m_{1B} > m_{2B}$, and doing the same in [Eqn. -@eq-comparison2] $m_{1A} > m_{2A}$. Together, these are identical to [Eqn. @eq-coex-igr].
+
+:::
+
+
+
+\clearpage
+
+## References
+
+\vspace{2em}
