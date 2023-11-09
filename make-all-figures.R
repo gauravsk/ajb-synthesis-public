@@ -340,6 +340,25 @@ simulate_psf_outcomes <- function(nreps = 2000) {
   # set a seed so that we can reproduce the results exactly
   set.seed(12345)
   
+  # Define a new version of the model to generate frequency-based dynamics only
+  psf_model_freqOnly <- function(time, init, params) {
+    with (as.list(c(time, init, params)), {
+      # description of parameters (see Bever et al. 1997)
+      # pA: frequency of plant species 1; pB = 1-pA
+      # m1A, m1B, m2A, m2B: conspecific and heterospecific effects of microbial community A or B on the growth of plant 1 or 2
+      # pAlpha: frequency of the soil microbial community A
+      # v: influence of plant species 2 on the microbial community relative to that of plant 1
+      
+      # Differential equations
+      dp1 <- p1*(1-p1)*((m1A-m2A)*pA + (m1B-m2B)*(1-pA))
+      dpA <- pA*(1-pA)*(p1-v*(1-p1))
+      
+      
+      # Return dN1 and dN2
+      return(list(c(dp1, dpA)))
+    })
+  }
+  
   # In this tibble, we are going to first define the parameter vectors
   # from random draws, then use each parameter vectors to run
   # the simulation. Each simulation gets run twice: once with
@@ -428,6 +447,7 @@ simulate_psf_outcomes <- function(nreps = 2000) {
       # (confirmatory check only)
       same_ = outcome == coex
     ) 
+  sim_df_filtered
 }
 
 # Running this simulation takes a long time, so I am making it simpler here:
