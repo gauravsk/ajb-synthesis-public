@@ -11,11 +11,6 @@ lapply(requirements, function(x) {
   }
 })
 
-library(tidyverse)
-library(deSolve)
-library(rootSolve)
-library(patchwork)
-library(latex2exp)
 
 # Define a function used for making the PSF framework
 # schematic, given a set of parameter values
@@ -30,11 +25,11 @@ make_params_plot <- function(params, scale = 1.5) {
   
   params_plot <- 
     ggplot(df) +
-    geom_label(x = 0, y = 1.1,    size = 3.25, label = "Plant 1", color = "white", fill = "#9970ab", fontface = "bold") + 
-    geom_label(x = 1, y = 1.1,    size = 3.25, label = "Plant 2", color = "white", fill = "#5aae61", fontface = "bold") +
-    geom_label(x = 0, y = -0.15,   size = 3.25, label = "Soil\nmicrobes A", label.size = 0) + 
-    geom_label(x = 1, y = -0.15,   size = 3.25, label = "Soil\nmicrobes B", label.size = 0) +
-    geom_label(x = 0.45, y = -0.4,  size = 3.50, label.size = 0.05,
+    geom_label(x = 0, y = 1.1, size = 3.25, label = "Plant 1", color = "white", fill = "#9970ab", fontface = "bold") + 
+    geom_label(x = 1, y = 1.1, size = 3.25, label = "Plant 2", color = "white", fill = "#5aae61", fontface = "bold") +
+    geom_label(x = 0, y = -0.15, size = 3.25, label = "Soil\nmicrobes A", label.size = 0) + 
+    geom_label(x = 1, y = -0.15, size = 3.25, label = "Soil\nmicrobes B", label.size = 0) +
+    geom_label(x = 0.45, y = -0.4, size = 3.00, label.size = 0.05,
                label = TeX(paste0("$I_S$ = (",
                                   params["m1A"], " + ",
                                   params["m2B"], ") - (",
@@ -43,25 +38,25 @@ make_params_plot <- function(params, scale = 1.5) {
                                   params["m1A"] + params["m2B"] - params["m1B"] - params["m2A"]))) + 
     geom_segment(aes(x = 0, xend = 0, y = 0.1, yend = 0.9),
                  arrow = arrow(length = unit(0.03, "npc")),
-                 size = abs(params["m1A"])*scale, 
+                 linewidth = abs(params["m1A"])*scale, 
                  color = alpha(color_func(params["m1A"]), 1)) +
     geom_segment(aes(x = 0.05, xend = 0.95, y = 0.1, yend = 0.9),
                  arrow = arrow(length = unit(0.03, "npc")),
-                 size = abs(params["m2A"])*scale, 
+                 linewidth = abs(params["m2A"])*scale, 
                  color = alpha(color_func(params["m1B"]),1)) +
     geom_segment(aes(x = 0.95, xend = 0.05, y = 0.1, yend = 0.9),
                  arrow = arrow(length = unit(0.03, "npc")),
-                 size = abs(params["m1B"])*scale, 
+                 linewidth = abs(params["m1B"])*scale, 
                  color = alpha(color_func(params["m2A"]), 1)) +
     geom_segment(aes(x = 1, xend = 1, y = 0.1, yend = 0.9),
                  arrow = arrow(length = unit(0.03, "npc"),),
-                 size = abs(params["m2B"])*scale, 
+                 linewidth = abs(params["m2B"])*scale, 
                  color = alpha(color_func(params["m2B"]), 1)) +
     
     # Plant cultivation of microbes
-    geom_segment(aes(x = -0.25, xend = -0.25, y = 0.9, yend = 0.1), size = 0.15, linetype = 1,
+    geom_segment(aes(x = -0.25, xend = -0.25, y = 0.9, yend = 0.1), linewidth = 0.15, linetype = 1,
                  arrow = arrow(length = unit(0.03, "npc"))) +
-    geom_segment(aes(x = 1.25, xend = 1.25, y = 0.9, yend = 0.1), size = 0.15, linetype = 1,
+    geom_segment(aes(x = 1.25, xend = 1.25, y = 0.9, yend = 0.1), linewidth = 0.15, linetype = 1,
                  arrow = arrow(length = unit(0.03, "npc"))) +
     
     annotate("text", x = 0, y = 0.5, 
@@ -72,7 +67,6 @@ make_params_plot <- function(params, scale = 1.5) {
              angle = -90, vjust = 1.5, size = 3) + 
     annotate("text", x = 0.75, y = 0.75, 
              label = TeX(paste0("m2A = ", params["m2A"])), 
-             # label = TeX(paste0("m_{2A} = ", params["m2A"])), 
              angle = 45, vjust = -0.25, size = 3) + 
     annotate("text", x = 0.25, y = 0.75, 
              label = TeX(paste0("m1B = ", params["m1B"])), 
@@ -102,7 +96,7 @@ psf_model <- function(time, init, params) {
     dp1 <- p1*(1-p1)*((m1A-m2A)*pA + (m1B-m2B)*(1-pA))
     dpA <- pA*(1-pA)*(p1-v*(1-p1))
     
-
+    
     # Return dN1 and dN2
     return(list(c(dN1, dN2, dp1, dpA)))
   })
@@ -119,7 +113,7 @@ make_figure_1 <- function() {
               m2A = 0.27, m2B = 0.13, v = 1)
   
   time <- seq(0,50,0.1)
-
+  
   # Run three simulations of plant growth with microbes:
   # out_pA_0 is the exponential growth of plants 1 and 2 in soil B
   init_pA_0 <- c(N1 = 3, N2 = 3, p1 = 0.5, pA = 0)
@@ -179,9 +173,10 @@ make_figure_1 <- function() {
     guides(linetype = guide_legend(override.aes = list(linewidth = 0.5))) + 
     ylab("Abundance") + 
     scale_x_continuous(breaks = c(0,5,10)) + 
+    scale_y_continuous(limits = c(0,40)) +
     theme_classic()  + 
-    theme(legend.text.align = 0)
-
+    theme(legend.text.align = 0, axis.title = element_text(size = 10))
+  
   # Panel C: plot for abundances of both plants when growing 
   # in dynamic soils
   panel_abund <- 
@@ -195,7 +190,8 @@ make_figure_1 <- function() {
                        name = "Plant species", label = c("Plant 1", "Plant 2"), guide = "none") +
     scale_y_continuous(breaks = c(2e4, 4e4, 6e4, 8e4), labels = scales::scientific) +
     theme_classic() +
-    ylab("Abundance")
+    ylab("Abundance") +
+    theme(axis.title = element_text(size = 10))
   
   # Panel D: plot for frequencies of both plants when growing 
   # in dynamic soils
@@ -211,7 +207,8 @@ make_figure_1 <- function() {
                        name = "Plant species", label = c("Plant 1", "Plant 2")) + 
     scale_y_continuous(limits = c(0,1), breaks = c(0, 0.5, 1)) + 
     theme_classic() +
-    ylab("Frequency")
+    ylab("Frequency") +
+    theme(axis.title = element_text(size = 10))
   
   # Combine panels together
   fig <- 
@@ -219,15 +216,16 @@ make_figure_1 <- function() {
     {{panel_extreme} / 
         {{panel_abund} + 
             {panel_freq} + plot_layout(guides = "collect")}} + 
-    plot_layout(widths = c(3.5,4)) + 
+    plot_layout(widths = c(3.75,4)) + 
     plot_annotation(tag_levels = "A") & 
     theme(plot.tag = element_text(face = "bold", size = 10),
-          plot.margin = unit(c(0,0,0,0), "cm"))
+          plot.margin = unit(c(0,0,0,0), "cm"),
+          legend.title = element_text(size = 10))
   
   return(fig)
 }
 fig1 <- make_figure_1()
-ggsave("figures/fig1.pdf", plot = fig1, width = 8, height = 3.25)
+ggsave("figures/fig1.pdf", plot = fig1, width = 7.25, height = 3.0, units = "in", dpi = 600)
 
 
 # Fig 2 -------------
@@ -245,7 +243,7 @@ make_figure_2AtoD <- function() {
   init_pA_05 <- c(N1 = 7, N2 = 3, p1 = 0.7, pA = 0.7)
   out_pA_05 <- ode(y = init_pA_05, times = time, func = psf_model, parms = params) %>% data.frame()
   
-
+  
   no_micr <- 
     tibble(time= out_pA_05$time) %>% 
     mutate(N1 = init_pA_0["N1"]*exp(params["m10"]*time),
@@ -267,7 +265,6 @@ make_figure_2AtoD <- function() {
                                   which == 3 ~ "none")) %>% 
     pivot_longer(N1:N2, values_to = "N", names_to = "which_sp") %>% 
     mutate(which_sp = ifelse(which_sp == "N1", "Plant 1", "Plant 2")) %>% 
-    
     filter(time < 10.1) 
   
   panel_extreme <- 
@@ -277,16 +274,17 @@ make_figure_2AtoD <- function() {
     scale_color_manual(values = c("#9970ab", "#5aae61"), labels = c("A","B"),
                        name = "species", guide = 'none') +
     scale_linewidth_manual(values = c(0.25,1.2,1.2), guide = 'none') +
-    
     scale_linetype_manual(values = c(1,2,3),
                           labels = c("unconditioned", TeX("$S_A = 1$"),TeX("$S_B = 1$")),
                           name = "Soil community" ) +
     facet_wrap(.~which_sp, scales = "free") +
     guides(linetype = guide_legend(override.aes = list(linewidth = 0.5))) + 
     ylab("Abundance") + 
-    scale_x_continuous(breaks = c(0,5,10)) + 
+    scale_x_continuous(breaks = c(0, 4, 8), limits = c(0,8)) +
+    scale_y_continuous(limits = c(0,40)) + 
     theme_classic()  + 
-    theme(legend.text.align = 0)
+    theme(legend.text.align = 0, 
+          axis.title = element_text(size = 10))
   
   # Make panel C
   panel_abund <- 
@@ -299,9 +297,11 @@ make_figure_2AtoD <- function() {
     scale_color_manual(values = c("#9970ab", "#5aae61"),
                        name = "Plant species", label = c("Plant 1", "Plant 2")) +
     # scale_y_log10() +
-    # scale_y_continuous(breaks = c(0,2e8,4e8)) + 
+    scale_y_continuous(breaks = c(0,8e17,1.6e18), labels = c("0", "7e17","1.4e18")) +
+    scale_x_continuous(breaks = c(0,75,150)) +
     theme_classic() +
-    ylab("Abundance")
+    ylab("Abundance") +
+    theme(axis.title = element_text(size = 10))
   
   # Make panel D
   panel_freq <- 
@@ -315,8 +315,10 @@ make_figure_2AtoD <- function() {
     scale_color_manual(values = c("#9970ab", "#5aae61"),
                        name = "Plant species", label = c("Plant 1", "Plant 2")) + 
     scale_y_continuous(limits = c(0,1.05), breaks = c(0, 0.5, 1), expand = c(0,0)) + 
+    scale_x_continuous(breaks = c(0,75,150)) +
     theme_classic() +
-    ylab("Frequency")
+    ylab("Frequency") + 
+    theme(axis.title = element_text(size = 10))
   
   # Combine together
   fig <- 
@@ -324,10 +326,11 @@ make_figure_2AtoD <- function() {
     {{panel_extreme} / 
         {{panel_abund} + 
             {panel_freq} + plot_layout(guides = "collect")}} + 
-    plot_layout(widths = c(3.75,4)) + 
+    plot_layout(widths = c(4,4)) + 
     plot_annotation(tag_levels = "A") & 
     theme(plot.tag = element_text(face = "bold", size = 10),
-          plot.margin = unit(c(0,0,0,0), "cm"))
+          plot.margin = unit(c(0,0,0,0), "cm"),
+          legend.title = element_text(size = 10))
   
   return(fig)
 }
@@ -358,6 +361,7 @@ simulate_psf_outcomes <- function(nreps = 2000) {
       return(list(c(dp1, dpA)))
     })
   }
+  
   
   # In this tibble, we are going to first define the parameter vectors
   # from random draws, then use each parameter vectors to run
@@ -470,17 +474,15 @@ fig2_panelE <-
   ylab("Density") +
   xlab(TeX("$I_S$")) + 
   annotate("text", x = -1.1, y = 0.3, label = 'coexistence',
-           color = "#666633",
-           size = 3, fontface = "bold") + 
-  annotate("text", x = 0.3, y = 0.65, label = 'exclusion',
-           color = "grey25",
-           size = 3, fontface = "bold") + 
+           color = "#666633", size = 3, fontface = "bold") + 
+  annotate("text", x = 0.4, y = 0.65, label = 'exclusion',
+           color = "grey25", size = 3, fontface = "bold") + 
   annotate("text", x = 1.35, y = 0.25, label = 'priority\neffects',
-           color = "#994455",
-           size = 3, fontface = "bold") + 
+           color = "#994455", size = 3, fontface = "bold") + 
   scale_fill_manual(values = c("#ccbb44","#bbbbbb" ,"#ee8866")) + 
   theme_classic() + 
-  theme(legend.position = "none", axis.text = element_text(size = 8), axis.title = element_text(size = 10))
+  theme(legend.position = "none", axis.text = element_text(size = 8), 
+        axis.title = element_text(size = 10))
 
 fig2_complete <- 
   fig2AtoD/
@@ -490,7 +492,7 @@ fig2_complete <-
   plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(face = "bold", size = 10))
 ggsave("figures/fig2.pdf", plot = fig2_complete, 
-       width=8, height = 5)
+       width=7.25, height = 4.5)
 
 # Fig S2--------
 # As above, this function makes Figure S2
@@ -553,6 +555,7 @@ make_figure_S2 <- function() {
     guides(linetype = guide_legend(override.aes = list(linewidth = 0.5))) + 
     ylab("Abundance") + 
     scale_x_continuous(breaks = c(0,5,10)) + 
+    scale_y_continuous(limits = c(0,40)) + 
     theme_classic()  + 
     theme(legend.text.align = 0)
   
