@@ -1,0 +1,51 @@
+
+\setcounter{equation}{0}
+\def\theequation{S3.\arabic{equation}}
+
+# Appendix S3: Derivation and implications of @Bever_2003's model for plant--soil feedback among competing plants
+
+**Contact**: Gaurav S. Kandlikar, [gkandlikar@lsu.edu](mailto:gkandlikar@lsu.edu)
+
+
+@Bever_2003 presented the first modeling framework for integrating plant--soil feedback with the effects of direct competition among plants. One of the key results from this analysis was that sufficiently strong negative plant--soil feedback can enable coexistence of species pairs where the competitive dynamics by themselves result in exclusion. 
+
+In this Appendix, I briefly explain the derivation of this model, and focus on some implications of its specification for empirical applications. A more complete analysis of this model is presented in the original publication and in @Revilla_2013.
+
+In the @Bever_2003 model, the effects of plant--soil feedback and plant competition are integrated into a population dynamics model as follows: 
+
+$$\frac{dN_1}{dt} = r_1N_1(1+m_{1A}S_A + m_{1B}S_B - \frac{N_1+c_{12}N_2}{K_1})$${#eq-b2003}
+
+Following the original parameter definitions, $N_i$ is the abundance of plant $i$, $r_i$ is the intrinsic population growth rate of plant $i$ in the absence of soil conditioning (units: $\frac{1}{\text{time}}$), $m_{iX}$ is the effect of microbial community $X$ on plant species $i$ (units: $\frac{1}{\text{microbe frequency}}$), $K_i$ is plant $i$'s carrying capacity in the absence of conditioning (units: $\text{abundance}$), and $c_{ji}$ is the per-capita competitive effect of plant $i$ on plant $j$, relative to the strength of plant $j$'s intraspecific competitive effect (units: unitless). 
+
+<!--
+To facilitate subsequent model analyses, we can rewrite this model in terms of absolute rather than relative competition coefficients: 
+
+$$\frac{dN_1}{dt} = r_1N_1(1+m_{1A}S_A + m_{1B}S_B - c_{11}N_1 - c_{12}N_2)$${#eq-b2003-cijs}
+
+Note that to derive [Eqn. @eq-b2003-cijs] from [Eqn. @eq-b2003], we simply define $c_{ii} = \frac{1}{K_i}$, and $c_{ij} = \frac{c_{ij}^{'}}{K_i}$. In this model formulation $c_{ii}$ is the per-capita intraspecific competition coefficient of species $i$, and $c_{ij}$ is the per-capita competitive impact of species $j$ on species $i$. These $c_{ij}$ parameters have units $\frac{1}{\text{abundance}}$.
+-->
+
+While this model is in principle a simple extension of @Bever_1997's exponential growth model to incorporate intra- and interspecific competition, the specific formulation of the model implies subtle but important changes in our assumptions of how microbes alter plant population dynamics. A practical example helps illustrate the distinction.
+
+Recall from Appendix 1 that in the @Bever_1997 model, the composition of the soil community directly (additively) increases or decreases the intrinsic growth rate of the plants. Thus, for example, the realized per-capita growth rate of plant 1 when growing alone (i.e. in soil entirely conditioned by plant 1, such that $S_A = 1$) is:
+
+$$\text{Realized growth rate of plant 1 in soil A (1997 model)} = r_{1, \text{unconditioned soil}} + m_{1A}$${#eq-Ri-1997}
+
+where $r_1$ is plant 1's growth rate in unconditioned soil. 
+
+In contrast, we can evaluate how soil microbes affect plant growth in the @Bever_2003 model. To recreate a similar scenario of plant 1 growing alone in conspecific-conditioned soil, we set $S_A = 1$, and both plant densities to zero (i.e. $N_1 = N_2 = 0$). With these values, the per-capita growth rate of plant 1 is:
+
+\vspace{-2em}
+
+\begin{multline}\label{eq-Ri-2003}
+\text{Realized growth rate of plant 1 in soil A (2003 model)} = r_{1, \text{unconditioned soil}}(1+m_{1A})  \\
+ = r_{1, \text{unconditioned soil}}+ m_{1A}\times r_{1, \text{unconditioned soil}}
+\end{multline}
+
+In other words, the specification of microbial effects in [Eqn. @eq-b2003] implies that the composition of the soil community causes a *proportional* increase or decrease in the intrinsic growth rate of the plant species, rather than an additive increase as in the exponential growth model. Thus, for a plant that grows in unconditioned soil at a rate of $r_{1,\text{unconditioned soil}} = 0.5$, a microbial effect of $m_{1A} = 0.2$ implies that it grows at a rate of $r_{1, \text{soil A}} = 0.7$ in the 1997 model, but $r_{1, \text{soil A}} = 0.6$ in the 2003 model. 
+
+
+The difference in model specification also has implications for how one analyzes experimental data, based on whether the goal is to parameterize the exponential growth model of @Bever_1997 or the competition model of @Bever_2003. As explained in the main text and in Appendix 1, $m_{iX}$ terms can be simply calculated as the difference in log-biomass of plants in conditioned vs. unconditioned soils, without any additional scaling (i.e. $m_{iX} = \log(B_{iX}) - \log(B_{i0})$). However,  Eqn. \ref{eq-Ri-2003} implies that when using these same data to parameterize the 2003 model, scaling by the growth rate in unconditioned soil becomes essential:
+
+
+$$m_{iX} = \frac{\log(B_{iX}) - \log(B_{i0})}{\log(B_{i0})}$$
